@@ -1,0 +1,8 @@
+0.0.1
+
+* Initial release
+* Initial data structures for a CASR 61.345 Pilot Personal Logbook.
+
+  These data structures are open to change as more is understood about the necessity of logbooks.
+  In particular, logging the particulars of IFR flights are currently not accounted for.
+
