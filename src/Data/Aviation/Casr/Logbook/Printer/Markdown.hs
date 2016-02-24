@@ -1,6 +1,6 @@
 module Data.Aviation.Casr.Logbook.Printer.Markdown (
   Markdown(..)
-, printMarkdownFile
+, printMarkdown
 , writeMarkdownFile
 ) where
 
@@ -9,11 +9,11 @@ class Markdown s where
     s
     -> String
 
-printMarkdownFile ::
+printMarkdown ::
   Markdown s =>
   s
   -> IO ()
-printMarkdownFile =
+printMarkdown =
   putStrLn . markdown
 
 writeMarkdownFile ::

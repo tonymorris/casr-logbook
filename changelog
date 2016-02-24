@@ -1,3 +1,7 @@
+0.0.2
+
+* Fix function name, `printMarkdown`.
+
 0.0.1
 
 * Initial release
@@ -5,4 +9,3 @@
 
   These data structures are open to change as more is understood about the necessity of logbooks.
   In particular, logging the particulars of IFR flights are currently not accounted for.
-
