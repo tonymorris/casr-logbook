@@ -1,3 +1,7 @@
+0.0.3
+
+* Fix bug in merging two totals.
+
 0.0.2
 
 * Fix function name, `printMarkdown`.

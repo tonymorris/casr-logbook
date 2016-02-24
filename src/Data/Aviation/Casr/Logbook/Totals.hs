@@ -42,14 +42,14 @@ instance Monoid Totals where
       (total1 `mappend` total2)
       (dualhours1 `mappend` dualhours2)
       (solohours1 `mappend` solohours2)
-      (intype1 `mappend` intype2)
-      (inreg1 `mappend` inreg2)
+      (Map.unionWith mappend intype1 intype2)
+      (Map.unionWith mappend inreg1 inreg2)
       (singleengine1 `mappend` singleengine2)
       (multiengine1 `mappend` multiengine2)
       (day1 `mappend` day2)
       (night1 `mappend` night2)
       (daynight1 `mappend` daynight2)
-      (pic1 `mappend` pic2)
+      (Map.unionWith mappend pic1 pic2)
 
 instance Markdown Totals where
   markdown (Totals total dualhours solohours intype inreg singleengine multiengine day night daynight pic) =
