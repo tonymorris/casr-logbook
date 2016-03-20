@@ -18,6 +18,7 @@ import Data.Aviation.Casr.Logbook.Printer.Markdown
 import Data.Foldable(foldl')
 import Data.Map(Map)
 import qualified Data.Map as Map
+import Text.Printf
 
 data Totals =
   Totals
@@ -58,7 +59,7 @@ instance Markdown Totals where
         displayPoint x h =
           "* " ++ x ++ ": **`" ++ displayHours h ++ "`**\n"
         displayMap x m =
-          "* " ++ x ++ "\n" ++ Map.foldrWithKey (\k h s -> "  * " ++ k ++ ": **`" ++ displayHours h ++ "`**\n" ++ s) "" m
+          "* " ++ x ++ "\n" ++ Map.foldrWithKey (\k h s -> "  * " ++ k ++ ": **`" ++ displayHours h ++ " (" ++ printf "%.2f" (fractionalHours h / fractionalHours total * 100 :: Double) ++ "%)`**\n" ++ s) "" m
     in  concat
           [
             "##### Summary\n"

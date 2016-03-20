@@ -2,6 +2,7 @@ module Data.Aviation.Casr.Logbook.Hours (
   Hours(..)
 , zeroHours
 , addHours
+, fractionalHours
 ) where
 
 import Data.Aviation.Casr.Logbook.Printer.Markdown
@@ -35,3 +36,10 @@ instance Monoid Hours where
 instance Markdown Hours where
   markdown (Hours t p) =
     "* Hours: **`" ++ show t ++ "." ++ show p ++ "`**\n"
+
+fractionalHours ::
+  Fractional a =>
+  Hours
+  -> a
+fractionalHours (Hours f p) =
+  fromIntegral f + (fromIntegral p / 10)
