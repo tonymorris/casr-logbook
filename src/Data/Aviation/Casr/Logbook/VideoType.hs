@@ -7,6 +7,7 @@ import Data.Aviation.Casr.Logbook.Printer.Markdown
 data VideoType =
   YouTube
   | Vimeo
+  | Bambuser
   deriving (Eq, Ord, Show)
 
 instance Markdown VideoType where
@@ -14,3 +15,5 @@ instance Markdown VideoType where
     "youtube"
   markdown Vimeo =
     "vimeo"
+  markdown Vimeo =
+    "bambuser"
