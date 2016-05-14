@@ -15,5 +15,5 @@ instance Markdown VideoType where
     "youtube"
   markdown Vimeo =
     "vimeo"
-  markdown Vimeo =
+  markdown Bambuser =
     "bambuser"
