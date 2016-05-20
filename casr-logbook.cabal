@@ -58,6 +58,7 @@ library
                     Data.Aviation.Casr.Logbook.Images
                     Data.Aviation.Casr.Logbook.ImageType
                     Data.Aviation.Casr.Logbook.Printer.Markdown
+                    Data.Aviation.Casr.Logbook.Printer.Html
                     Data.Aviation.Casr.Logbook.Name
                     Data.Aviation.Casr.Logbook.PiC
                     Data.Aviation.Casr.Logbook.PoB

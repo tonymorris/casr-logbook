@@ -3,6 +3,7 @@ module Data.Aviation.Casr.Logbook.Image (
 ) where
 
 import Data.Aviation.Casr.Logbook.ImageType
+import Data.Aviation.Casr.Logbook.Printer.Html
 import Data.Aviation.Casr.Logbook.Printer.Markdown
 import Data.Maybe
 
@@ -25,5 +26,20 @@ instance Markdown Image where
           , uri
           , "\" width=\"120\" alt=\""
           , n
-          , "\"/></a>"
+          , "\"></a>"
+          ]
+
+instance Html Image where
+  html (Image uri name itype) =
+    let t = html itype
+        n = fromMaybe ("Image (" ++ t ++ ")") name
+    in  concat
+          [
+            "<a href=\""
+          , uri
+          , "\"><img src=\""
+          , uri
+          , "\" width=\"120\" alt=\""
+          , n
+          , "\"></a>"
           ]

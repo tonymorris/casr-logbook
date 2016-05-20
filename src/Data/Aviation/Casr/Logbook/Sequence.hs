@@ -3,6 +3,7 @@ module Data.Aviation.Casr.Logbook.Sequence (
 ) where
 
 import Data.Aviation.Casr.Logbook.Printer.Markdown
+import Data.Aviation.Casr.Logbook.Printer.Html
 import Data.String
 
 newtype Sequence =
@@ -16,4 +17,17 @@ instance IsString Sequence where
 
 instance Markdown Sequence where
   markdown (Sequence s) =
-    "* Sequence: **" ++ s ++ "**\n"
+    "* Sequence: **" ++ markdown s ++ "**\n"
+
+instance Html Sequence where
+  html (Sequence s) =
+    concat
+      [
+        "<span class=\"heading sequenceheading\">"
+      , "Sequence"
+      , "</span>"
+      , ": "
+      , "<span class=\"info sequenceinfo\">"
+      , html s
+      , "</span>"
+      ]

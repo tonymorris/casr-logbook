@@ -4,6 +4,7 @@ module Data.Aviation.Casr.Logbook.TrackLogType (
 
 import Data.Aviation.Casr.Logbook.ImageType
 import Data.Aviation.Casr.Logbook.Printer.Markdown
+import Data.Aviation.Casr.Logbook.Printer.Html
 
 data TrackLogType =
   Gpx
@@ -21,3 +22,13 @@ instance Markdown TrackLogType where
     "kmz"
   markdown (ImageLog i) =
     markdown i
+
+instance Html TrackLogType where
+  html Gpx =
+    "gpx"
+  html Kml =
+    "kml"
+  html Kmz =
+    "kmz"
+  html (ImageLog i) =
+    html i

@@ -2,6 +2,7 @@ module Data.Aviation.Casr.Logbook.Visualisations (
   Visualisations(..)
 ) where
 
+import Data.Aviation.Casr.Logbook.Printer.Html
 import Data.Aviation.Casr.Logbook.Printer.Markdown
 import Data.Aviation.Casr.Logbook.Visualisation
 
@@ -23,3 +24,25 @@ instance Markdown Visualisations where
         ""
       _ ->
         "* **Visualisations**\n" ++ (v >>= \w -> "  * " ++ markdown w ++ "\n")
+
+instance Html Visualisations where
+  html (Visualisations v) =
+    case v of
+      [] ->
+        ""
+      _ ->
+        concat
+          [
+            "<span class=\"heading visualisationheading\">"
+          , "Visualisation"
+          , "</span>"
+          , "<ul>"
+          , v >>= \u -> concat
+                          [
+                            "<li>"
+                          , html u
+                          , "</li>"
+                          ]
+          , "</ul>"
+          ]
+        

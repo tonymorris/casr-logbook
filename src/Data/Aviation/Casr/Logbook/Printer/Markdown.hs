@@ -9,6 +9,18 @@ class Markdown s where
     s
     -> String
 
+instance Markdown Char where
+  markdown =
+    pure
+
+instance Markdown Int where
+  markdown =
+    show
+
+instance Markdown a => Markdown [a] where
+  markdown =
+    (=<<) markdown
+
 printMarkdown ::
   Markdown s =>
   s

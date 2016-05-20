@@ -15,6 +15,7 @@ import Data.Aviation.Casr.Logbook.Hours
 import Data.Aviation.Casr.Logbook.PoB
 import Data.Aviation.Casr.Logbook.PiC
 import Data.Aviation.Casr.Logbook.Printer.Markdown
+import Data.Aviation.Casr.Logbook.Printer.Html
 import Data.Foldable(foldl')
 import Data.Map(Map)
 import qualified Data.Map as Map
@@ -76,6 +77,79 @@ instance Markdown Totals where
           , displayMap "Hours with PiC" pic            
           ]
 
+instance Html Totals where
+  html (Totals total dualhours solohours intype inreg singleengine multiengine day night daynight pic) =
+    let displayHours (Hours f p) =
+          show f ++ "." ++ show p
+        displayPoint x h q =
+          concat
+            [
+              "<li class=\"summarypoint\">"
+            , "<span class=\"heading summarypointheading summarypointheading"
+            , q
+            , "\">"
+            , x            
+            , "</span>: <span class=\"summarypoint summarypoint"
+            , q
+            , "\">"            
+            , displayHours h
+            , "</span></li>"
+            ]
+        displayMap x m q =
+          concat
+            [
+              "<li class=\"summarypoint summarypoint"
+            , q
+            , "\">"
+            , "<span class=\"heading summarypointheading summarypointheading"
+            , q
+            , "\">"
+            , x            
+            , "</span>: <div class=\"summarypoint summarypoint"
+            , q
+            , "\"><ul>"
+            , Map.foldrWithKey (\k h s -> concat [
+                                                   "<li class=\"subsummarypoint subsummarypoint"
+                                                 , q
+                                                 , "\">"
+                                                 , "<span class=\"heading subsummarypointheading subsummarypointheading"
+                                                 , q
+                                                 , "\">"
+                                                 , k
+                                                 , "</span>: <span class=\"subsummarypointhours subsummarypointhours"
+                                                 , q
+                                                 , "\">"
+                                                 , displayHours h
+                                                 , "</span> <span class=\"subsummarypointpercentage subsummarypointpercentage"
+                                                 , q
+                                                 , "\">("
+                                                 , printf "%.2f" (fractionalHours h / fractionalHours total * 100 :: Double)
+                                                 , "%)</span>"
+                                                 , "</li>"
+                                                 , s
+                                                 ]) "" m
+            , "</ul></div></li>"
+            ]        
+    in  concat
+          [
+            "<div class=\"totals\">"
+          , "<h5>Summary</h5>"
+          , "<ul>"
+          , displayPoint "Total Hours" total "totalhours"
+          , displayPoint "Dual Hours" dualhours "dualhours"
+          , displayPoint "Solo Hours" solohours "solohours"
+          , displayMap "Hours in type" intype "hoursintype"
+          , displayMap "Hours in registration" inreg "hoursinregistration"
+          , displayPoint "Single-engine Hours" singleengine "singleenginehours"
+          , displayPoint "Multi-engine Hours" multiengine "multienginehours"
+          , displayPoint "Day Hours" day "dayhours"
+          , displayPoint "Night Hours" night "nighthours"
+          , displayPoint "Day &amp; Night Hours" daynight "daynighthours"
+          , displayMap "Hours with PiC" pic "pichours"           
+          , "</ul>"
+          , "</div>"
+          ]
+
 zeroTotals ::
   Totals
 zeroTotals =
@@ -95,7 +169,7 @@ zeroTotals =
 singleTotals ::
  FlightLogEntry
  -> Totals
-singleTotals (FlightLogEntry _ _ _ (Aircraft atype areg aeng) hours (PoB pob) _ dn (PiC pic) _ _ _ _) =
+singleTotals (FlightLogEntry _ _ (Aircraft atype areg aeng) hours (PoB pob) _ dn (PiC pic) _ _ _ _) =
   Totals
     hours
     (

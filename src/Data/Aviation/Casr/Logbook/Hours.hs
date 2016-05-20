@@ -6,6 +6,7 @@ module Data.Aviation.Casr.Logbook.Hours (
 ) where
 
 import Data.Aviation.Casr.Logbook.Printer.Markdown
+import Data.Aviation.Casr.Logbook.Printer.Html
 
 -- abstract
 data Hours =
@@ -35,8 +36,23 @@ instance Monoid Hours where
 
 instance Markdown Hours where
   markdown (Hours t p) =
-    "* Hours: **`" ++ show t ++ "." ++ show p ++ "`**\n"
+    "* Hours: **`" ++ markdown t ++ "." ++ markdown p ++ "`**\n"
 
+instance Html Hours where
+  html (Hours t p) =
+    concat
+      [
+        "<span class=\"heading hoursheading\">"
+      , "Hours"
+      , "</span>"
+      , ": "
+      , "<span class=\"info hoursinfo\">"
+      , html t
+      , "."
+      , html p
+      , "</span>"
+      ]
+      
 fractionalHours ::
   Fractional a =>
   Hours

@@ -1,9 +1,12 @@
 module Data.Aviation.Casr.Logbook.FlightPath (
   FlightPath(..)
+, pathlist
 , directPath
 ) where
 
 import Data.Aviation.Casr.Logbook.Printer.Markdown
+import Data.Aviation.Casr.Logbook.Printer.Html
+import Data.List
 
 data FlightPath =
   FlightPath
@@ -22,14 +25,30 @@ directPath fr to =
     []
     to
 
+pathlist ::
+  FlightPath
+  -> [String]
+pathlist (FlightPath s x e) =
+  s : (x ++ [e])
+
 instance Markdown FlightPath where
-  markdown (FlightPath s x e) =
+  markdown p =
     concat
       [
-        "* Path: **"
-      , s
-      , x >>= (" - " ++)
-      , " - "
-      , e
+        "* Flight path: **"
+      , intercalate " - " (map markdown (pathlist p))
       , "**\n"
+      ]
+
+instance Html FlightPath where
+  html p =
+    concat
+      [
+        "<span class=\"heading flightpathheading\">"
+      , "Flight path"
+      , "</span>"
+      , ": "
+      , "<span class=\"info flightpathinfo\">"
+      , intercalate " &amp; " (map html (pathlist p))
+      , "</span>"
       ]

@@ -1,4 +1,6 @@
-module Data.Aviation.Casr.Logbook(
+{-# LANGUAGE OverloadedStrings #-}
+
+module Data.Aviation.Casr.Logbook (
   module L
 ) where
 
@@ -16,6 +18,7 @@ import Data.Aviation.Casr.Logbook.Hours as L
 import Data.Aviation.Casr.Logbook.Image as L
 import Data.Aviation.Casr.Logbook.Images as L
 import Data.Aviation.Casr.Logbook.ImageType as L
+import Data.Aviation.Casr.Logbook.Printer.Html as L
 import Data.Aviation.Casr.Logbook.Printer.Markdown as L
 import Data.Aviation.Casr.Logbook.Name as L
 import Data.Aviation.Casr.Logbook.PiC as L

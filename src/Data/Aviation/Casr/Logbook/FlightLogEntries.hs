@@ -4,6 +4,7 @@ module Data.Aviation.Casr.Logbook.FlightLogEntries (
 
 import Data.Aviation.Casr.Logbook.FlightLogEntry
 import Data.Aviation.Casr.Logbook.Printer.Markdown
+import Data.Aviation.Casr.Logbook.Printer.Html
 import Data.List
 
 newtype FlightLogEntries =
@@ -20,3 +21,13 @@ instance Monoid FlightLogEntries where
 instance Markdown FlightLogEntries where
   markdown (FlightLogEntries g) =
     intercalate "\n\n----\n\n" (fmap markdown g)
+
+instance Html FlightLogEntries where
+  html (FlightLogEntries g) =
+    (\h -> concat
+             [
+               "<div class=\"flightlogentry\">"
+              , html h
+              , "</div>"
+              , "<hr>"
+              ]) =<< g

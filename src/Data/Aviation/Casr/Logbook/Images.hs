@@ -3,6 +3,7 @@ module Data.Aviation.Casr.Logbook.Images (
 ) where
 
 import Data.Aviation.Casr.Logbook.Image
+import Data.Aviation.Casr.Logbook.Printer.Html
 import Data.Aviation.Casr.Logbook.Printer.Markdown
 
 newtype Images =
@@ -23,3 +24,11 @@ instance Markdown Images where
         []        
       _ ->
         "\n<div style=\"text-align: justify\">\n" ++ (i >>= \j -> markdown j ++ "\n") ++ "</div>"
+
+instance Html Images where
+  html (Images i) =
+    case i of
+      [] ->
+        []        
+      _ ->
+        "<div style=\"text-align: justify\">" ++ (i >>= html) ++ "</div>"

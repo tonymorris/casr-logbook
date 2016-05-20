@@ -3,6 +3,7 @@ module Data.Aviation.Casr.Logbook.TrackLogs (
 ) where
 
 import Data.Aviation.Casr.Logbook.Printer.Markdown
+import Data.Aviation.Casr.Logbook.Printer.Html
 import Data.Aviation.Casr.Logbook.TrackLog
 
 newtype TrackLogs =
@@ -23,3 +24,25 @@ instance Markdown TrackLogs where
         ""
       _ ->
         "* **Track**\n" ++ (t >>= \u -> markdown u ++ "\n")
+
+instance Html TrackLogs where
+  html (TrackLogs t) =
+    case t of
+      [] ->
+        ""
+      _ ->
+        concat
+          [
+            "<span class=\"heading tracklogheading\">"
+          , "Track"
+          , "</span>"
+          , "<ul>"
+          , t >>= \u -> concat
+                          [
+                            "<li>"
+                          , html u
+                          , "</li>"
+                          ]
+          , "</ul>"
+          ]
+        

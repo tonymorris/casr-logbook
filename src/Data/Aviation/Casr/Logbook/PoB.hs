@@ -5,6 +5,7 @@ module Data.Aviation.Casr.Logbook.PoB (
 ) where
 
 import Data.Aviation.Casr.Logbook.Printer.Markdown
+import Data.Aviation.Casr.Logbook.Printer.Html
 
 data PoB =
   PoB Int
@@ -29,6 +30,23 @@ instance Markdown PoB where
           0 -> "unmanned"
           1 -> "solo"
           2 -> "dual"
-          _ -> show n
+          _ -> markdown n
       , "`**\n"
+      ]
+
+instance Html PoB where  
+  html (PoB n) =
+    concat
+      [
+        "<span class=\"heading pobheading\">"
+      , "PoB"
+      , "</span>"
+      , ": "
+      , "<span class=\"info pobinfo\">"
+      , case n of
+          0 -> "unmanned"
+          1 -> "solo"
+          2 -> "dual"
+          _ -> html n
+      , "</span>"
       ]
