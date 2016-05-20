@@ -49,6 +49,6 @@ instance Html FlightPath where
       , "</span>"
       , ": "
       , "<span class=\"info flightpathinfo\">"
-      , intercalate " &amp; " (map html (pathlist p))
+      , intercalate " &mdash; " (map html (pathlist p))
       , "</span>"
       ]
