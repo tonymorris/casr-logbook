@@ -56,21 +56,21 @@ instance Html FlightLog where
       , "<script type=\"text/javascript\" src=\"https://raw.github.com/Mathapedia/LaTeX2HTML5/master/latex2html5.min.js\"></script>"
       , "</head>"
       , "<body class=\"casr-logbook\">"    
-      , "<div class=\"title\">"
+      , "<div id=\"title\" class=\"title\">"
       , "<h1>Pilot Personal Log Book</h1>"
       , "</div>"
-      , "<div class=\"subtitle\">"
+      , "<div id=\"subtitle\" class=\"subtitle\">"
       , "<h2>Civil Aviation Safety Regulation 1998 (61.345) <span class=\"austlii\"><a href=\"http://www.austlii.edu.au/au/legis/cth/consol_reg/casr1998333/s61.345.html\">austlii.edu.au</a></span></h2>"
       , "</div>" 
-      , "<div class=\"personal\">"     
+      , "<div id=\"personal\" class=\"personal\">"     
       , "<ul>"
-      , "<li>"
+      , "<li id=\"name\">"
       , html name
       , "</li>"
-      , "<li>"
+      , "<li id=\"dob\">"
       , html dob
       , "</li>"
-      , "<li>"
+      , "<li id=\"arn\">"
       , html arn
       , "</li>"
       , "</ul>"            
@@ -78,7 +78,7 @@ instance Html FlightLog where
       , "<hr>"
       , html (totals entries)
       , "<hr>"
-      , "<div class=\"flightlogentries\">"
+      , "<div id=\"flightlogentries\" class=\"flightlogentries\">"
       , html entries
       , "</div> "
       , "</body>"

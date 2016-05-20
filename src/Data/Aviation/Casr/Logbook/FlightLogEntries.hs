@@ -2,6 +2,8 @@ module Data.Aviation.Casr.Logbook.FlightLogEntries (
   FlightLogEntries(..)
 ) where
 
+import Data.Aviation.Casr.Logbook.Aircraft
+import Data.Aviation.Casr.Logbook.Date
 import Data.Aviation.Casr.Logbook.FlightLogEntry
 import Data.Aviation.Casr.Logbook.Printer.Markdown
 import Data.Aviation.Casr.Logbook.Printer.Html
@@ -24,10 +26,28 @@ instance Markdown FlightLogEntries where
 
 instance Html FlightLogEntries where
   html (FlightLogEntries g) =
-    (\h -> concat
-             [
-               "<div class=\"flightlogentry\">"
-              , html h
-              , "</div>"
-              , "<hr>"
-              ]) =<< g
+    (\(i, h@(FlightLogEntry _ (Date d) (Aircraft _ reg _) _ _ _ _ _ _ _ _ _)) ->
+      let divid = concat
+                    [
+                      d
+                    , "_"
+                    , reg
+                    , "_"
+                    , show (i :: Int)
+                    ]
+      in  concat
+            [
+              "<div id=\""
+            , divid
+            , "\" class=\"flightlogentry\">"
+            , "<div class=\"hreflink\">"
+            , "<a href=\"#"
+            , divid
+            , "\">"
+            , "§"
+            , "</a>"
+            , "</div>"
+            , html h
+            , "</div>"
+            , "<hr>"
+            ]) =<< zip [0..] g

@@ -85,7 +85,9 @@ instance Html Totals where
           concat
             [
               "<li class=\"summarypoint\">"
-            , "<span class=\"heading summarypointheading summarypointheading"
+            , "<span id=\""
+            , q
+            , "\" class=\"heading summarypointheading summarypointheading"
             , q
             , "\">"
             , x            
@@ -101,7 +103,9 @@ instance Html Totals where
               "<li class=\"summarypoint summarypoint"
             , q
             , "\">"
-            , "<span class=\"heading summarypointheading summarypointheading"
+            , "<span id=\""
+            , q
+            , "\" class=\"heading summarypointheading summarypointheading"
             , q
             , "\">"
             , x            
@@ -132,7 +136,10 @@ instance Html Totals where
             ]        
     in  concat
           [
-            "<div class=\"totals\">"
+            "<div id=\"summary\" class=\"totals\">"
+          , "<div class=\"hreflink\">"
+          , "<a href=\"#summary\">§</a>"
+          , "</div>"
           , "<h5>Summary</h5>"
           , "<ul>"
           , displayPoint "Total Hours" total "totalhours"
