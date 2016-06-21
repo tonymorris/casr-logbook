@@ -58,12 +58,30 @@ instance Html ExamEntry where
       , ")"
       , "</li>"
       , "<li class=\"delegatearn\">"
-      , html da
+      , concat
+        [
+          "<span class=\"heading delegatearnheading\">"
+        , "Delegate ARN"
+        , "</span>"
+        , ": "
+        , "<span class=\"info delegatearninfo\">"
+        , html da
+        , "</span>"
+        ]
       , "</li>"
       , "<li class=\"examresult\">"
-      , html r
-      , "/"
-      , html m
+      , concat
+        [
+          "<span class=\"heading resultheading\">"
+        , "Result"
+        , "</span>"
+        , ": "
+        , "<span class=\"info resultinfo\">"
+        , html r
+        , "/"
+        , html m
+        , "</span>"
+        ]
       , "</li>"
       , "</ul>"
       ]

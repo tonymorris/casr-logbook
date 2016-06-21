@@ -1,3 +1,7 @@
+0.0.12
+
+* Fix exam output for HTML.
+
 0.0.11
 
 * Fix build to export `FlightEntry`.
