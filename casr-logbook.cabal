@@ -1,5 +1,5 @@
 name:               casr-logbook
-version:            0.0.10
+version:            0.0.11
 license:            OtherLicense
 license-file:       LICENSE
 author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
@@ -52,6 +52,7 @@ library
                     Data.Aviation.Casr.Logbook.Entries
                     Data.Aviation.Casr.Logbook.Entry
                     Data.Aviation.Casr.Logbook.ExamEntry
+                    Data.Aviation.Casr.Logbook.FlightEntry
                     Data.Aviation.Casr.Logbook.FlightPath
                     Data.Aviation.Casr.Logbook.Hours
                     Data.Aviation.Casr.Logbook.Image
