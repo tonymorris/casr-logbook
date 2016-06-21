@@ -9,8 +9,8 @@ module Data.Aviation.Casr.Logbook.Totals (
 import Data.Aviation.Casr.Logbook.Aircraft
 import Data.Aviation.Casr.Logbook.DayNight
 import Data.Aviation.Casr.Logbook.Engine
-import Data.Aviation.Casr.Logbook.FlightLogEntry
-import Data.Aviation.Casr.Logbook.FlightLogEntries
+import Data.Aviation.Casr.Logbook.Entries
+import Data.Aviation.Casr.Logbook.FlightEntry
 import Data.Aviation.Casr.Logbook.Hours
 import Data.Aviation.Casr.Logbook.PoB
 import Data.Aviation.Casr.Logbook.PiC
@@ -174,9 +174,9 @@ zeroTotals =
     Map.empty
 
 singleTotals ::
- FlightLogEntry
+ FlightEntry
  -> Totals
-singleTotals (FlightLogEntry _ _ (Aircraft atype areg aeng) hours (PoB pob) _ dn (PiC pic) _ _ _ _) =
+singleTotals (FlightEntry _ _ (Aircraft atype areg aeng) hours (PoB pob) _ dn (PiC pic) _ _ _ _) =
   Totals
     hours
     (
@@ -219,14 +219,14 @@ singleTotals (FlightLogEntry _ _ (Aircraft atype areg aeng) hours (PoB pob) _ dn
     (Map.singleton pic hours)
 
 updateTotals ::
-  FlightLogEntry
+  FlightEntry
   -> Totals
   -> Totals
 updateTotals =
   mappend . singleTotals
 
 totals ::
-  FlightLogEntries
+  Entries
   -> Totals
-totals (FlightLogEntries e) =
-  foldl' (flip updateTotals) zeroTotals e
+totals =
+  foldl' (flip updateTotals) zeroTotals . flightEntries

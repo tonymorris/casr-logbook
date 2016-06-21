@@ -1,5 +1,5 @@
-module Data.Aviation.Casr.Logbook.FlightLogEntry (
-  FlightLogEntry(..)
+module Data.Aviation.Casr.Logbook.FlightEntry (
+  FlightEntry(..)
 ) where
 
 import Data.Aviation.Casr.Logbook.Aircraft
@@ -23,8 +23,8 @@ This data structure currently only handles Day VFR. More modifications are
 likely to result in a complete flight log entry structure.
 
 -}
-data FlightLogEntry =
-  FlightLogEntry
+data FlightEntry =
+  FlightEntry
     Sequence
     Date 
     Aircraft
@@ -39,8 +39,8 @@ data FlightLogEntry =
     Videos
   deriving (Eq, Ord, Show)
     
-instance Markdown FlightLogEntry where
-  markdown (FlightLogEntry sequ date aircraft hours pob flightpath daynight pic tracklogs visualisations images videos) =
+instance Markdown FlightEntry where
+  markdown (FlightEntry sequ date aircraft hours pob flightpath daynight pic tracklogs visualisations images videos) =
     concat
       [
         markdown date
@@ -57,8 +57,8 @@ instance Markdown FlightLogEntry where
       , markdown images
       ]
 
-instance Html FlightLogEntry where
-  html (FlightLogEntry sequ date aircraft hours pob flightpath daynight pic tracklogs visualisations images videos) =
+instance Html FlightEntry where
+  html (FlightEntry sequ date aircraft hours pob flightpath daynight pic tracklogs visualisations images videos) =
     let onethen x c r = concat $
                  case r of
                    [] ->

@@ -1,25 +1,25 @@
-module Data.Aviation.Casr.Logbook.FlightLog (
-  FlightLog(..)
+module Data.Aviation.Casr.Logbook.Log (
+  Log(..)
 ) where
 
 import Data.Aviation.Casr.Logbook.ARN
 import Data.Aviation.Casr.Logbook.DOB
-import Data.Aviation.Casr.Logbook.FlightLogEntries
+import Data.Aviation.Casr.Logbook.Entries
 import Data.Aviation.Casr.Logbook.Name
 import Data.Aviation.Casr.Logbook.Printer.Markdown
 import Data.Aviation.Casr.Logbook.Printer.Html
 import Data.Aviation.Casr.Logbook.Totals
 
-data FlightLog =
-  FlightLog
+data Log =
+  Log
     Name
     DOB
     ARN
-    FlightLogEntries
+    Entries
   deriving (Eq, Ord, Show)
     
-instance Markdown FlightLog where
-  markdown (FlightLog (Name name') dob arn entries) =
+instance Markdown Log where
+  markdown (Log (Name name') dob arn entries) =
     concat
       [
         "# Pilot Personal Log Book\n"
@@ -35,8 +35,8 @@ instance Markdown FlightLog where
       , markdown entries
       ]
     
-instance Html FlightLog where
-  html (FlightLog name@(Name name') dob arn@(ARN arn') entries) =
+instance Html Log where
+  html (Log name@(Name name') dob arn@(ARN arn') entries) =
     concat
       [
         "<!DOCTYPE HTML>"
