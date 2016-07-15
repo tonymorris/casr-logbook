@@ -1,40 +1,38 @@
-module Data.Aviation.Casr.Logbook.DayNight (
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE TemplateHaskell #-}
+
+module Data.Aviation.Casr.Logbook.DayNight(
   DayNight(..)
+, day
+, night
 ) where
 
-import Data.Aviation.Casr.Logbook.Printer.Markdown
-import Data.Aviation.Casr.Logbook.Printer.Html
+import Control.Lens(makeClassy)
+import Data.Aviation.Casr.Logbook.TimeAmount(TimeAmount(TimeAmount), zerotimeamount)
+import Data.Digit(Digit)
+import Data.Eq(Eq)
+import Data.Int(Int)
+import Data.Ord(Ord)
+import Prelude(Show)
 
 data DayNight =
-  Day
-  | Night
-  | DayNight
-  deriving (Eq, Ord, Show)
-    
-instance Markdown DayNight where
-  markdown x =
-    concat
-      [
-        "* Day/Night: **"
-      , case x of
-          Day -> "Day"
-          Night -> "Night"
-          DayNight -> "Day & Night"
-      , "**\n"
-      ]
-    
-instance Html DayNight where
-  html x =
-    concat
-      [
-        "<span class=\"heading daynightheading\">"
-      , "Day/Night"
-      , "</span>"
-      , ": "
-      , "<span class=\"info daynightinfo\">"
-      , case x of
-          Day -> "Day"
-          Night -> "Night"
-          DayNight -> "Day &amp; Night"
-      , "</span>"
-      ]
+  DayNight {
+    _dayDayNight :: TimeAmount
+  , _nightDayNight :: TimeAmount
+  } deriving (Eq, Ord, Show)
+
+makeClassy ''DayNight
+
+day ::
+  Int
+  -> Digit
+  -> DayNight
+day h p =
+  DayNight (TimeAmount h p) zerotimeamount
+
+night ::
+  Int
+  -> Digit
+  -> DayNight
+night h p =
+  DayNight zerotimeamount (TimeAmount h p)

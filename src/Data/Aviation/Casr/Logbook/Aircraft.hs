@@ -1,69 +1,44 @@
-module Data.Aviation.Casr.Logbook.Aircraft (
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE TemplateHaskell #-}
+
+module Data.Aviation.Casr.Logbook.Aircraft(
   Aircraft(..)
+, singleaircraft
+, multiaircraft
 ) where
 
-import Data.Aviation.Casr.Logbook.Engine
-import Data.Aviation.Casr.Logbook.Printer.Markdown
-import Data.Aviation.Casr.Logbook.Printer.Html
+import Control.Lens(makeClassy)
+import Data.Aviation.Casr.Logbook.Engine(Engine(Single, Multi))
+import Data.Eq(Eq)
+import Data.Ord(Ord)
+import Data.String(String)
+import Prelude(Show)
 
 data Aircraft =
+  Aircraft {
+    _aircraftType :: String
+  , _aircraftRegistration :: String
+  , _aircraftEngine :: Engine
+  } deriving (Eq, Ord, Show)
+
+makeClassy ''Aircraft
+
+singleaircraft ::
+  String
+  -> String
+  -> Aircraft
+singleaircraft t r =
   Aircraft
-    String -- type
-    String -- registration
-    Engine
-  deriving (Eq, Ord, Show)
+    t
+    r
+    Single
 
-instance Markdown Aircraft where
-  markdown (Aircraft t r e) =
-    concat
-      [
-        "* Aircraft"
-      , "\n  * Type: **"
-      , markdown t
-      , "**\n  * Registration: **`"
-      , markdown r
-      , "`**\n  * Engine: **`"
-      , markdown e
-      , "`**\n"
-      ]
-
-instance Html Aircraft where
-  html (Aircraft t r e) =
-    concat
-      [
-        "<span class=\"heading aircraftheading\">"
-      , "Aircraft"
-      , "</span>"
-      , ": "
-      , "<div class=\"info aircraftinfo\">"
-      , "<ul>"
-      , "<li>"
-      , "<span class=\"heading aircrafttypeheading\">"
-      , "Type"
-      , "</span>"
-      , ": "
-      , "<span class=\"info aircrafttypeinfo\">"
-      , html t
-      , "</span>"
-      , "</li>"
-      , "<li>"
-      , "<span class=\"heading aircraftregistrationheading\">"
-      , "Registration"
-      , "</span>"
-      , ": "
-      , "<span class=\"info aircraftregistrationinfo\">"
-      , html r
-      , "</span>"
-      , "</li>"
-      , "<li>"
-      , "<span class=\"heading aircraftengineheading\">"
-      , "Engine"
-      , "</span>"
-      , ": "
-      , "<span class=\"info aircraftengineinfo\">"
-      , html e
-      , "</span>"
-      , "</li>"
-      , "</ul>"
-      , "</div>"
-      ]
+multiaircraft ::
+  String
+  -> String
+  -> Aircraft
+multiaircraft t r =
+  Aircraft
+    t
+    r
+    Multi

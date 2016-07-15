@@ -1,54 +1,52 @@
-module Data.Aviation.Casr.Logbook.FlightPath (
+{-# LANGUAGE NoImplicitPrelude #-}
+{-# LANGUAGE TemplateHaskell #-}
+
+module Data.Aviation.Casr.Logbook.FlightPath(
   FlightPath(..)
-, pathlist
-, directPath
+, directflightpath
+, directcircuit
+, pointsatdate
 ) where
 
-import Data.Aviation.Casr.Logbook.Printer.Markdown
-import Data.Aviation.Casr.Logbook.Printer.Html
-import Data.List
+import Control.Lens(makeClassy)
+import Data.Aviation.Casr.Logbook.FlightPoint(FlightPoint, pointatdate)
+import Data.Eq(Eq)
+import Data.Functor((<$>))
+import Data.Ord(Ord)
+import Data.String(String)
+import Data.Time(Day)
+import Prelude(Show)
 
 data FlightPath =
-  FlightPath
-    String -- start
-    [String] -- touch-downs
-    String -- end
-  deriving (Eq, Ord, Show)
+  FlightPath {
+    _flightStart :: FlightPoint
+  , _flightIntermediate :: [FlightPoint]
+  , _flightEnd :: FlightPoint
+  } deriving (Eq, Ord, Show)
 
-directPath ::
-  String
-  -> String
+makeClassy ''FlightPath
+
+directflightpath ::
+  FlightPoint
+  -> FlightPoint
   -> FlightPath
-directPath fr to =
-  FlightPath
-    fr
-    []
-    to
+directflightpath x y =
+  FlightPath x [] y
 
-pathlist ::
-  FlightPath
+directcircuit ::
+  FlightPoint
+  -> FlightPath
+directcircuit x =
+  directflightpath x x
+
+pointsatdate ::
+  String
   -> [String]
-pathlist (FlightPath s x e) =
-  s : (x ++ [e])
-
-instance Markdown FlightPath where
-  markdown p =
-    concat
-      [
-        "* Flight path: **"
-      , intercalate " - " (map markdown (pathlist p))
-      , "**\n"
-      ]
-
-instance Html FlightPath where
-  html p =
-    concat
-      [
-        "<span class=\"heading flightpathheading\">"
-      , "Flight path"
-      , "</span>"
-      , ": "
-      , "<span class=\"info flightpathinfo\">"
-      , intercalate " &mdash; " (map html (pathlist p))
-      , "</span>"
-      ]
+  -> String
+  -> Day
+  -> FlightPath
+pointsatdate x i y d =
+  FlightPath
+    (pointatdate x d)
+    ((\s -> pointatdate s d) <$> i)
+    (pointatdate y d)
