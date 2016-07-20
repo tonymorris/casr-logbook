@@ -14,15 +14,15 @@ description:
   .
   <<https://i.imgur.com/Lfhcmtg.png>>
 
-homepage:           https://github.com/tonymorris/casr-61.345
-bug-reports:        https://github.com/tonymorris/casr-61.345/issues
+homepage:           https://github.com/tonymorris/casr-logbook
+bug-reports:        https://github.com/tonymorris/casr-logbook/issues
 cabal-version:      >= 1.10
 build-type:         Custom
 extra-source-files: changelog
 
 source-repository   head
   type:             git
-  location:         git@github.com:tonymorris/casr-61.345.git
+  location:         git@github.com:tonymorris/casr-logbook.git
 
 flag                small_base
   description:      Choose the new, split-up base package.
