@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.FlightPath(
   FlightPath(..)
+, HasFlightPath(..)
 , directflightpath
 , directcircuit
 , pointsatdate

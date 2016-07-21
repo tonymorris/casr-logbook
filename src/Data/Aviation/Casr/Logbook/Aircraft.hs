@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.Aircraft(
   Aircraft(..)
+, HasAircraft(..)
 , singleaircraft
 , multiaircraft
 ) where

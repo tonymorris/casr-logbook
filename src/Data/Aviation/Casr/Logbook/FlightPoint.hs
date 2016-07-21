@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.FlightPoint(
   FlightPoint(..)
+, HasFlightPoint(..)
 , pointatdate
 , runwayatdate
 ) where

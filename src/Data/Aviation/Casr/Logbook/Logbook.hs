@@ -5,6 +5,7 @@
 
 module Data.Aviation.Casr.Logbook.Logbook(
   Logbook(..)
+, HasLogbook(..)
 , aviatorlogbook
 , emptylogbook
 , singleentrylogbook

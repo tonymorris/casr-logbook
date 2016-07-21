@@ -6,6 +6,7 @@
 
 module Data.Aviation.Casr.Logbook.Entry(
   Entry(..)
+, AsEntry(..)
 ) where
 
 import Control.Lens(makeClassyPrisms)

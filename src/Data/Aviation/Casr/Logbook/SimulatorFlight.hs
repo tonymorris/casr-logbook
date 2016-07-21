@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.SimulatorFlight(
   SimulatorFlight(..)
+, HasSimulatorFlight(..)
 , dayonlysimulator
 ) where
 

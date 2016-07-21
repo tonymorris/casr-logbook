@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.Exam(
   Exam(..)
+, HasExam(..)
 , dayonlyexam
 ) where
 

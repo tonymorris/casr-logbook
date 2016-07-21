@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.Location(
   Location(..)
+, HasLocation(..)
 ) where
 
 import Control.Lens(makeClassy)

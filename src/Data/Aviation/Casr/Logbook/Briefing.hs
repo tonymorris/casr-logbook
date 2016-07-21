@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.Briefing(
   Briefing(..)
+, HasBriefing(..)
 ) where
   
 import Control.Lens(makeClassy)

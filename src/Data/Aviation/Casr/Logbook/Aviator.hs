@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.Aviator(
   Aviator(..)
+, HasAviator(..)
 , aviatorwithname
 , nodobaviator
 , dobaviator

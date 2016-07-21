@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.Time(
   Time(..)
+, HasTime(..)
 , dayonly
 , dayandtime
 ) where
@@ -16,7 +17,7 @@ import Prelude(Show)
 
 data Time =
   Time {
-    _day :: Day
+    _daytime :: Day
   , _timeofday :: Maybe TimeOfDay
   } deriving (Eq, Ord, Show)
 

@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.DayNight(
   DayNight(..)
+, HasDayNight(..)
 , day
 , night
 ) where

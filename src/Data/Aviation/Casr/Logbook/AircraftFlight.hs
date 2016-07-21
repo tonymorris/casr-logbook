@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.AircraftFlight(
   AircraftFlight(..)
+, HasAircraftFlight(..)
 , icusonlyflight
 , noif_icusonlyflight
 , dualonlyflight

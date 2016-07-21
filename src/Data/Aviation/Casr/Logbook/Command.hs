@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.Command(
   Command(..)
+, AsCommand(..)
 ) where
 
 import Control.Lens(makeClassyPrisms)

@@ -3,6 +3,7 @@
 
 module Data.Aviation.Casr.Logbook.TimeAmount(
   TimeAmount(..)
+, HasTimeAmount(..)
 , parttimeamount
 , zerotimeamount
 , addtimeamount
