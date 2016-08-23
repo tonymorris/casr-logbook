@@ -7,6 +7,7 @@ module Data.Aviation.Casr.Logbook.TimeAmount(
 , parttimeamount
 , zerotimeamount
 , addtimeamount
+, timeAmountBy10
 ) where
 
 import Control.Lens(makeClassy, ( # ))
@@ -15,7 +16,7 @@ import Data.Digit(Digit, x0, digit, (/+/))
 import Data.Int(Int)
 import Data.Monoid(Monoid(mempty, mappend))
 import Data.Ord(Ord)
-import Prelude(Show, Num((+)))
+import Prelude(Show, Num((+), (*)))
 
 data TimeAmount =
   TimeAmount {
@@ -43,6 +44,12 @@ addtimeamount ::
 TimeAmount f1 p1 `addtimeamount` TimeAmount f2 p2 =
   let (h, q) = p1 /+/ p2
   in  TimeAmount (f1 + f2 + digit # h) q 
+
+timeAmountBy10 ::
+  TimeAmount
+  -> Int
+timeAmountBy10 (TimeAmount a b) =
+  a * 10 + digit # b
 
 instance Monoid TimeAmount where
   mempty =

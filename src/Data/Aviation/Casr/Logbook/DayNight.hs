@@ -6,6 +6,7 @@ module Data.Aviation.Casr.Logbook.DayNight(
 , HasDayNight(..)
 , day
 , night
+, totalDayNight
 ) where
 
 import Control.Lens(makeClassy)
@@ -13,6 +14,7 @@ import Data.Aviation.Casr.Logbook.TimeAmount(TimeAmount(TimeAmount), zerotimeamo
 import Data.Digit(Digit)
 import Data.Eq(Eq)
 import Data.Int(Int)
+import Data.Monoid(mappend)
 import Data.Ord(Ord)
 import Prelude(Show)
 
@@ -37,3 +39,9 @@ night ::
   -> DayNight
 night h p =
   DayNight zerotimeamount (TimeAmount h p)
+
+totalDayNight ::
+  DayNight
+  -> TimeAmount
+totalDayNight (DayNight d n) =
+  d `mappend` n

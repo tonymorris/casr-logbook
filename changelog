@@ -1,6 +1,10 @@
 0.1.3
 
 * Fix `SimulatorFlight` to include flight time.
+* Add `totalDayNight` function.
+* Add `getInstructingPic` function.
+* Add `timeAmountBy10` function.
+* Add `flightPathList` function.
 
 0.1.2
 

@@ -7,12 +7,14 @@ module Data.Aviation.Casr.Logbook.FlightPath(
 , directflightpath
 , directcircuit
 , pointsatdate
+, flightPathList
 ) where
 
 import Control.Lens(makeClassy)
 import Data.Aviation.Casr.Logbook.FlightPoint(FlightPoint, pointatdate)
 import Data.Eq(Eq)
 import Data.Functor((<$>))
+import Data.List((++))
 import Data.Ord(Ord)
 import Data.String(String)
 import Data.Time(Day)
@@ -51,3 +53,9 @@ pointsatdate x i y d =
     (pointatdate x d)
     ((\s -> pointatdate s d) <$> i)
     (pointatdate y d)
+
+flightPathList ::
+  FlightPath
+  -> [FlightPoint]
+flightPathList (FlightPath s x e) =
+  s : x ++ [e]
