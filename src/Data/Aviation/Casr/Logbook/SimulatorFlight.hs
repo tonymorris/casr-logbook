@@ -23,7 +23,8 @@ data SimulatorFlight =
   , _simulatorflighttime :: Time
   , _simulatortype :: String
   , _simulatorothercrew :: [Aviator]
-  , _instrumentsimulatorTimeAmount :: TimeAmount
+  , _simulatorTime :: TimeAmount
+  , _instrumentsimulatorTime :: TimeAmount
   } deriving (Eq, Ord, Show)   
 
 makeClassy ''SimulatorFlight
@@ -33,6 +34,7 @@ dayonlysimulator ::
   -> Day
   -> String
   -> [Aviator]
+  -> TimeAmount
   -> TimeAmount
   -> SimulatorFlight
 dayonlysimulator n d =
