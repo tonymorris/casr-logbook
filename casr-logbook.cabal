@@ -1,5 +1,5 @@
 name:               casr-logbook
-version:            0.2.0
+version:            0.2.1
 license:            OtherLicense
 license-file:       LICENSE
 author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
@@ -36,11 +36,13 @@ library
                     , casr-logbook-types >= 0.0.1 && < 0.1
                     , casr-logbook-meta >= 0.0.4 && < 0.1
                     , casr-logbook-html >= 0.0.2 && < 0.1
-                    , casr-logbook-meta-html >= 0.0.3 && < 0.1
+                    , casr-logbook-meta-html >= 0.0.4 && < 0.1
                     , casr-logbook-reports >= 0.0.2 && < 0.1
                     , casr-logbook-reports-html >= 0.0.2 && < 0.1
                     , casr-logbook-reports-meta >= 0.0.3 && < 0.1
-                    , casr-logbook-reports-meta-html >= 0.0.2 && < 0.1
+                    , casr-logbook-reports-meta-html >= 0.0.3 && < 0.1
+                    , digit < 3 && >= 0.2.8
+                    , time < 2 && >= 1.5
 
   ghc-options:
                     -Wall

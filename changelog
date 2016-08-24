@@ -1,3 +1,9 @@
+0.2.1
+
+* Use `casr-logbook-meta-html-0.0.4`.
+* Use `casr-logbook-reports-meta-html-0.0.3`.
+* Export `Data.Time` and `Data.Digit` under logbook module.
+
 0.2.0
 
 * The contents of this package was moved to `casr-logbook-types`
