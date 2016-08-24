@@ -12,3 +12,5 @@ import Data.Aviation.Casr.Logbook.Reports.Meta as L
 import Data.Aviation.Casr.Logbook.Reports.Meta.Html as L
 import Data.Time as L
 import Data.Digit as L
+import Lucid as L
+

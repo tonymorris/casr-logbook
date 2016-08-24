@@ -1,3 +1,7 @@
+0.2.2
+
+* Add `Lucid` module in export.
+
 0.2.1
 
 * Use `casr-logbook-meta-html-0.0.4`.
