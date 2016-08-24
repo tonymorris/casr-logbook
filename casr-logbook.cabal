@@ -1,5 +1,5 @@
 name:               casr-logbook
-version:            0.1.3
+version:            0.2.0
 license:            OtherLicense
 license-file:       LICENSE
 author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
@@ -33,11 +33,15 @@ library
 
   build-depends:
                     base < 5 && >= 4.8
-                    , containers < 0.6 && >= 0.4
-                    , digit < 3 && >= 0.2.8
-                    , time < 2 && >= 1.5
-                    , lens < 5 && >= 4
-                    
+                    , casr-logbook-types >= 0.0.1 && < 0.1
+                    , casr-logbook-meta >= 0.0.4 && < 0.1
+                    , casr-logbook-html >= 0.0.2 && < 0.1
+                    , casr-logbook-meta-html >= 0.0.3 && < 0.1
+                    , casr-logbook-reports >= 0.0.2 && < 0.1
+                    , casr-logbook-reports-html >= 0.0.2 && < 0.1
+                    , casr-logbook-reports-meta >= 0.0.3 && < 0.1
+                    , casr-logbook-reports-meta-html >= 0.0.2 && < 0.1
+
   ghc-options:
                     -Wall
 
@@ -49,25 +53,7 @@ library
 
   exposed-modules:
                     Data.Aviation.Casr.Logbook
-                    Data.Aviation.Casr.Logbook.Rating
-                    Data.Aviation.Casr.Logbook.Aviator
-                    Data.Aviation.Casr.Logbook.Engine
-                    Data.Aviation.Casr.Logbook.Aircraft
-                    Data.Aviation.Casr.Logbook.TimeAmount
-                    Data.Aviation.Casr.Logbook.DayNight
-                    Data.Aviation.Casr.Logbook.Location
-                    Data.Aviation.Casr.Logbook.Command
-                    Data.Aviation.Casr.Logbook.Time
-                    Data.Aviation.Casr.Logbook.FlightPoint
-                    Data.Aviation.Casr.Logbook.FlightPath
-                    Data.Aviation.Casr.Logbook.AircraftFlight
-                    Data.Aviation.Casr.Logbook.SimulatorFlight
-                    Data.Aviation.Casr.Logbook.Exam
-                    Data.Aviation.Casr.Logbook.Briefing
-                    Data.Aviation.Casr.Logbook.Entry
-                    Data.Aviation.Casr.Logbook.Entries
-                    Data.Aviation.Casr.Logbook.Logbook
-
+                    
 test-suite doctests
   type:
                     exitcode-stdio-1.0

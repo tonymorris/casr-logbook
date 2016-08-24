@@ -1,3 +1,8 @@
+0.2.0
+
+* The contents of this package was moved to `casr-logbook-types`
+* This package becomes the conjunction of other `casr-logbook-*` packages.
+
 0.1.3
 
 * Fix `SimulatorFlight` to include flight time.
