@@ -1,0 +1,13 @@
+- aircraft reg RA/GA/MIL
+- RPA
+- split into modules
+- remove lensy fields and makeClassy
+- fix expenses
+- add XC field on flight
+- outputs
+  - use optics
+  - hakyll output
+  - split output
+  - print output
+
+
