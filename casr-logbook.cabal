@@ -40,6 +40,8 @@ library
                     , lucid >= 2.9 && < 3
                     , lens >= 4.1 && < 5
                     , text >= 1.2 && < 1.3
+                    , vfr-waypoints >= 0.1.0.1 && < 0.2
+
   ghc-options:
                     -Wall
 
