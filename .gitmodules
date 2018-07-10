@@ -1,0 +1,3 @@
+[submodule "geodetics"]
+	path = geodetics
+	url = https://github.com/qfpl/geodetics
