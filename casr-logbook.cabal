@@ -17,15 +17,12 @@ description:
 homepage:           https://github.com/tonymorris/casr-logbook
 bug-reports:        https://github.com/tonymorris/casr-logbook/issues
 cabal-version:      >= 1.10
-build-type:         Custom
+build-type:         Simple
 extra-source-files: changelog
 
 source-repository   head
   type:             git
   location:         git@github.com:tonymorris/casr-logbook.git
-
-flag                small_base
-  description:      Choose the new, split-up base package.
 
 library
   default-language:
