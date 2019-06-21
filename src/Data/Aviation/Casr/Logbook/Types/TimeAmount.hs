@@ -13,6 +13,7 @@ module Data.Aviation.Casr.Logbook.Types.TimeAmount(
 import Data.Bool(Bool, bool)
 import Data.Maybe(fromMaybe)
 import Data.Ord((>))
+import Data.Semigroup
 import Prelude(Integral, divMod, mod)
 import Control.Lens(makeClassy, (^?), over, _1, ( # ))
 import Data.Eq(Eq)
@@ -55,11 +56,15 @@ timeAmountBy10 ::
 timeAmountBy10 (TimeAmount a b) =
   a * 10 + integralDecimal # b
 
+instance Semigroup TimeAmount where
+  (<>) =
+    addtimeamount
+
 instance Monoid TimeAmount where
   mempty =
     zerotimeamount
   mappend =
-    addtimeamount
+    (<>)
 
 ---- belongs in digit package
 
