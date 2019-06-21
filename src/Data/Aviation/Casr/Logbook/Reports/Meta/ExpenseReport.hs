@@ -30,6 +30,7 @@ import Data.Function(($))
 import Data.Int(Int)
 import Data.Monoid(Monoid(mempty, mappend))
 import Data.Ord(Ord)
+import Data.Semigroup(Semigroup((<>)))
 import Prelude(Show)
 import Prelude((+))
 
@@ -44,11 +45,15 @@ data ExpenseReport =
 
 makeClassy ''ExpenseReport
 
+instance Semigroup ExpenseReport where
+  ExpenseReport ag1 al1 b1 e1 s1 <> ExpenseReport ag2 al2 b2 e2 s2 =
+    ExpenseReport (ag1 + ag2) (al1 + al2) (b1 + b2) (e1 + e2) (s1 + s2)
+
 instance Monoid ExpenseReport where
   mempty =
     ExpenseReport 0 0 0 0 0
-  ExpenseReport ag1 al1 b1 e1 s1 `mappend` ExpenseReport ag2 al2 b2 e2 s2 =
-    ExpenseReport (ag1 + ag2) (al1 + al2) (b1 + b2) (e1 + e2) (s1 + s2)
+  mappend =
+    (<>)
 
 entryExpenseReport ::
   Entry AircraftFlightMeta SimulatorFlightMeta ExamMeta BriefingMeta

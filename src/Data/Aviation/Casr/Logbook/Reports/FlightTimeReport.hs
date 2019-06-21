@@ -38,6 +38,7 @@ import Data.Map(Map)
 import Data.Maybe(Maybe(Just, Nothing))
 import Data.Monoid(Monoid(mappend, mempty))
 import Data.Ord(Ord)
+import Data.Semigroup(Semigroup((<>)))
 import Data.String(String)
 import Prelude(Show, (+))
 
@@ -97,6 +98,35 @@ data FlightTimeReport =
 
 makeClassy ''FlightTimeReport
 
+instance Semigroup FlightTimeReport where
+  FlightTimeReport ft1 tl1 tli1 tld1 tlc1 tp1 rg1 se1 sei1 sed1 sec1 me1 mei1 med1 mec1 dy1 dyi1 dyd1 dyc1 nt1 nti1 ntd1 ntc1 wpc1 is1 <> FlightTimeReport ft2 tl2 tli2 tld2 tlc2 tp2 rg2 se2 sei2 sed2 sec2 me2 mei2 med2 mec2 dy2 dyi2 dyd2 dyc2 nt2 nti2 ntd2 ntc2 wpc2 is2 =
+    FlightTimeReport
+      (ft1 + ft2)
+      (tl1 <> tl2)
+      (tli1 <> tli2)
+      (tld1 <> tld2)
+      (tlc1 <> tlc2)
+      (Map.unionWith mappend tp1 tp2)
+      (Map.unionWith mappend rg1 rg2)
+      (se1 <> se2)
+      (sei1 <> sei2)
+      (sed1 <> sed2)
+      (sec1 <> sec2)
+      (me1 <> me2)
+      (mei1 <> mei2)
+      (med1 <> med2)
+      (mec1 <> mec2)
+      (dy1 <> dy2)
+      (dyi1 <> dyi2)
+      (dyd1 <> dyd2)
+      (dyc1 <> dyc2)
+      (nt1 <> nt2)
+      (nti1 <> nti2)
+      (ntd1 <> ntd2)
+      (ntc1 <> ntc2)
+      (Map.unionWith mappend wpc1 wpc2)
+      (is1 <> is2)
+
 instance Monoid FlightTimeReport where
   mempty =
     FlightTimeReport
@@ -125,33 +155,8 @@ instance Monoid FlightTimeReport where
       mempty
       mempty
       mempty
-  FlightTimeReport ft1 tl1 tli1 tld1 tlc1 tp1 rg1 se1 sei1 sed1 sec1 me1 mei1 med1 mec1 dy1 dyi1 dyd1 dyc1 nt1 nti1 ntd1 ntc1 wpc1 is1 `mappend` FlightTimeReport ft2 tl2 tli2 tld2 tlc2 tp2 rg2 se2 sei2 sed2 sec2 me2 mei2 med2 mec2 dy2 dyi2 dyd2 dyc2 nt2 nti2 ntd2 ntc2 wpc2 is2 =
-    FlightTimeReport
-      (ft1 + ft2)
-      (tl1 `mappend` tl2)
-      (tli1 `mappend` tli2)
-      (tld1 `mappend` tld2)
-      (tlc1 `mappend` tlc2)
-      (Map.unionWith mappend tp1 tp2)
-      (Map.unionWith mappend rg1 rg2)
-      (se1 `mappend` se2)
-      (sei1 `mappend` sei2)
-      (sed1 `mappend` sed2)
-      (sec1 `mappend` sec2)
-      (me1 `mappend` me2)
-      (mei1 `mappend` mei2)
-      (med1 `mappend` med2)
-      (mec1 `mappend` mec2)
-      (dy1 `mappend` dy2)
-      (dyi1 `mappend` dyi2)
-      (dyd1 `mappend` dyd2)
-      (dyc1 `mappend` dyc2)
-      (nt1 `mappend` nt2)
-      (nti1 `mappend` nti2)
-      (ntd1 `mappend` ntd2)
-      (ntc1 `mappend` ntc2)
-      (Map.unionWith mappend wpc1 wpc2)
-      (is1 `mappend` is2)
+  mappend =
+    (<>)
 
 singleFlightTimeReport ::
   Entry a b c d

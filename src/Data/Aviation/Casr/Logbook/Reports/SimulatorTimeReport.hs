@@ -22,6 +22,7 @@ import Data.Eq(Eq)
 import Data.Foldable(foldl')
 import Data.Monoid(Monoid(mappend, mempty))
 import Data.Ord(Ord)
+import Data.Semigroup(Semigroup((<>)))
 import Prelude(Show)
 
 data SimulatorTimeReport =
@@ -35,13 +36,17 @@ data SimulatorTimeReport =
 
 makeClassy ''SimulatorTimeReport
 
+instance Semigroup SimulatorTimeReport where
+  SimulatorTimeReport t1 i1 <> SimulatorTimeReport t2 i2 =
+    SimulatorTimeReport (t1 <> t2) (i1 <> i2)
+
 instance Monoid SimulatorTimeReport where
   mempty =
     SimulatorTimeReport
       mempty
       mempty
-  SimulatorTimeReport t1 i1 `mappend` SimulatorTimeReport t2 i2 =
-    SimulatorTimeReport (t1 `mappend` t2) (i1 `mappend` i2)
+  mappend =
+    (<>)
 
 singleSimulatorTimeReport ::
   Entry a b c d

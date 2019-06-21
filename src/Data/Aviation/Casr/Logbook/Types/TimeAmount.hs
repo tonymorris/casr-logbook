@@ -13,7 +13,7 @@ module Data.Aviation.Casr.Logbook.Types.TimeAmount(
 import Data.Bool(Bool, bool)
 import Data.Maybe(fromMaybe)
 import Data.Ord((>))
-import Data.Semigroup
+import Data.Semigroup(Semigroup((<>)))
 import Prelude(Integral, divMod, mod)
 import Control.Lens(makeClassy, (^?), over, _1, ( # ))
 import Data.Eq(Eq)
