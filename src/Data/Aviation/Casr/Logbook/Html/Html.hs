@@ -94,7 +94,7 @@ import Data.Aviation.Casr.Logbook.Types(
   )
 import Data.Bool(not)
 import Data.Char(toUpper)
-import Data.Digit(Digit)
+import Data.Digit(DecDigit)
 import Data.Eq((==))
 import Data.Foldable(fold, sequence_, mapM_, null)
 import Data.Function(($))
@@ -221,7 +221,7 @@ htmlAviatorName s f =
                   fromString f
 
 htmlAviatorARN ::
-  [Digit]
+  [DecDigit]
   -> Html ()
 htmlAviatorARN a =
   when (not . null $ a) $

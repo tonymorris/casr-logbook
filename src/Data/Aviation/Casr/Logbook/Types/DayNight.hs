@@ -11,7 +11,7 @@ module Data.Aviation.Casr.Logbook.Types.DayNight(
 
 import Control.Lens(makeClassy)
 import Data.Aviation.Casr.Logbook.Types.TimeAmount(TimeAmount(TimeAmount), zerotimeamount)
-import Data.Digit(Digit)
+import Data.Digit(DecDigit)
 import Data.Eq(Eq)
 import Data.Int(Int)
 import Data.Monoid(mappend)
@@ -28,14 +28,14 @@ makeClassy ''DayNight
 
 day ::
   Int
-  -> Digit
+  -> DecDigit
   -> DayNight
 day h p =
   DayNight (TimeAmount h p) zerotimeamount
 
 night ::
   Int
-  -> Digit
+  -> DecDigit
   -> DayNight
 night h p =
   DayNight zerotimeamount (TimeAmount h p)

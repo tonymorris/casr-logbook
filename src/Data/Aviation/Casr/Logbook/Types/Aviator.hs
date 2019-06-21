@@ -13,7 +13,7 @@ import Control.Lens(makeClassy)
 import Data.Aviation.Casr.Logbook.Types.Rating(Rating)
 import Data.Eq(Eq)
 import Data.Ord(Ord)
-import Data.Digit(Digit)
+import Data.Digit(DecDigit)
 import Data.Maybe(Maybe(Nothing, Just))
 import Data.String(String)
 import Data.Time(Day)
@@ -23,7 +23,7 @@ data Aviator =
   Aviator {
     _surname :: String
   , _firstname :: String
-  , _arn :: [Digit]
+  , _arn :: [DecDigit]
   , _dob :: Maybe Day
   , _ratings :: [Rating]
   } deriving (Eq, Ord, Show)
@@ -45,7 +45,7 @@ aviatorwithname s f =
 nodobaviator ::
   String
   -> String
-  -> [Digit]
+  -> [DecDigit]
   -> [Rating]
   -> Aviator
 nodobaviator s f r =
@@ -58,7 +58,7 @@ nodobaviator s f r =
 dobaviator ::
   String
   -> String
-  -> [Digit]
+  -> [DecDigit]
   -> Day
   -> [Rating]
   -> Aviator
