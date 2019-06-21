@@ -47,7 +47,7 @@ module Data.Aviation.Casr.Logbook.Html.Html(
 
 import Control.Applicative((*>))
 import Control.Category((.), id)
-import Control.Lens((^.))
+import Control.Lens((^.), ( # ))
 import Control.Monad(when, (=<<), (>>=))
 import Data.Aviation.Casr.Logbook.Types(
     arn
@@ -94,7 +94,7 @@ import Data.Aviation.Casr.Logbook.Types(
   )
 import Data.Bool(not)
 import Data.Char(toUpper)
-import Data.Digit(DecDigit)
+import Data.Digit(DecDigit, charDecimal)
 import Data.Eq((==))
 import Data.Foldable(fold, sequence_, mapM_, null)
 import Data.Function(($))
@@ -151,7 +151,7 @@ strTimeAmount ::
   TimeAmount
   -> String
 strTimeAmount (TimeAmount h x) =
-  show h <> "." <> show x
+  show h <> "." <> [charDecimal # x]
 
 strEngine ::
   Engine
@@ -228,7 +228,7 @@ htmlAviatorARN a =
     do  li_ [id_ "aviatorarn"] $ 
           do  span_ [class_ "key"] "ARN: "
               span_ [class_ "value"] $
-                fromString (a >>= show)
+                fromString (a >>= (\d -> [charDecimal # d]))
 
 htmlAviatorDob ::
   Maybe Day
@@ -269,7 +269,7 @@ htmlAviatorShort (Aviator s f a _ r) =
       " "
       fromString s
       when (not . null $ a) $ " "
-      fromString (a >>= show)
+      fromString (a >>= (\d -> [charDecimal # d]))
       when (not . null $ r) $ " "
       htmlRatingsShort r
 
@@ -651,7 +651,7 @@ htmlTitleAviator a =
                 , " "
                 , a ^. surname
                 , " ("
-                , show =<< (a ^. arn)
+                , (\d -> [charDecimal # d]) =<< (a ^. arn)
                 , ")"
                 ])
 
