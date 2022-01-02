@@ -28,47 +28,24 @@ import Data.Aviation.Casr.Logbook.Html.Html(
     htmlTimeAmount
   , htmlAviatorShort
   )
-import Data.Aviation.Casr.Logbook.Reports(
-    hoursMultiEngineDual
-  , hoursMultiEngineInCommand
-  , hoursDay
-  , hoursDayICUS
-  , hoursDayDual
-  , hoursDayInCommand
-  , hoursNight
-  , hoursNightICUS
-  , hoursNightDual
-  , hoursNightInCommand
-  , hoursWithPiC
-  , hoursInstrument
-  , hoursTotalDual
-  , hoursTotalInCommand
-  , hoursInAircraftType
-  , hoursInAircraftRegistration
-  , hoursSingleEngine
-  , hoursSingleEngineICUS
-  , hoursSingleEngineDual
-  , hoursMultiEngineInCommand
-  , hoursMultiEngineDual
-  , hoursTotalICUS
-  , hoursSingleEngineInCommand
-  , hoursMultiEngine
-  , hoursMultiEngineICUS
-  , hoursTotal
-  , flightsTotal
-  , hoursTotalSimulator
-  , hoursInstrumentSimulator
-  , currency90
-  , landing1
-  , landing2
-  , landing3
-  , takeoff1
-  , takeoff2
-  , takeoff3
-  , TakeOffLanding90(TakeOffLanding90)
-  , SimulatorTimeReport
-  , FlightTimeReport
-  )
+import Data.Aviation.Casr.Logbook.Reports
+    ( TakeOffLanding90(TakeOffLanding90),
+      SimulatorTimeReport,
+      FlightTimeReport,
+      HasSimulatorTimeReport(hoursTotalSimulator,
+                             hoursInstrumentSimulator),
+      HasTakeOffLanding90(currency90, landing3, landing2, landing1,
+                          takeoff3, takeoff2, takeoff1),
+      HasFlightTimeReport(hoursInstrument, hoursWithPiC,
+                          hoursGAInstructing, hoursRAInstructing, hoursInstructing,
+                          hoursNightInCommand, hoursNightDual, hoursNightICUS, hoursNight,
+                          hoursDayInCommand, hoursDayDual, hoursDayICUS, hoursDay,
+                          hoursMultiEngineInCommand, hoursMultiEngineDual,
+                          hoursMultiEngineICUS, hoursMultiEngine, hoursSingleEngineInCommand,
+                          hoursSingleEngineDual, hoursSingleEngineICUS, hoursSingleEngine,
+                          hoursInAircraftRegistration, hoursInAircraftType,
+                          hoursTotalInCommand, hoursTotalDual, hoursTotalICUS, hoursTotal,
+                          flightsTotal) )
 import Data.Foldable(foldr)
 import Data.Function(flip, ($))
 import qualified Data.Map as Map(foldrWithKey)
@@ -110,8 +87,8 @@ htmlTakeOffLanding90 ::
 htmlTakeOffLanding90 _ r =
   div_ [class_ "flighttimecurrencyreport"] $
     do  a_ [id_ "RPT_FlightTimeCurrency"] ""
-        a_ [href_ (Text.pack ("#RPT_FlightTimeCurrency"))] . span_ [class_ "entrytag"] $ "RPT"
-        h3_ [class_ "flighttimecurrencyreportname"] "Flight Time Currency Report"                    
+        a_ [href_ (Text.pack "#RPT_FlightTimeCurrency")] . span_ [class_ "entrytag"] $ "RPT"
+        h3_ [class_ "flighttimecurrencyreportname"] "Flight Time Currency Report"
         case r of
           Nothing ->
             span_ [class_ "flighttimenocurrency"] "NIL three take-offs and landings"
@@ -178,8 +155,8 @@ htmlSimulatorTimeReport ::
 htmlSimulatorTimeReport _ r =
   div_ [class_ "simulatortimereport"] $
     do  a_ [id_ "RPT_SimulatorTimeSummary"] ""
-        a_ [href_ (Text.pack ("#RPT_SimulatorTimeSummary"))] . span_ [class_ "entrytag"] $ "RPT"
-        h3_ [class_ "simulatortimereportname"] "Simulator Time Summary Report"          
+        a_ [href_ (Text.pack "#RPT_SimulatorTimeSummary")] . span_ [class_ "entrytag"] $ "RPT"
+        h3_ [class_ "simulatortimereportname"] "Simulator Time Summary Report"
         ul_ [] $
           do  li_ [] $
                 do  span_ [class_ "key"] "Total Simulator Hours: "
@@ -187,7 +164,7 @@ htmlSimulatorTimeReport _ r =
               li_ [] $
                 do  span_ [class_ "key"] "Instrument Simulator Hours: "
                     span_ [class_ "value"] . htmlTimeAmount $ r ^. hoursTotalSimulator
-              
+
 htmlFlightTimeReport ::
   Logbook a b c d
   -> FlightTimeReport
@@ -196,7 +173,7 @@ htmlFlightTimeReport _ r =
   div_ [class_ "flighttimereport"] $
     do  a_ [id_ "RPT_FlightTimeSummary"] ""
         a_ [href_ (Text.pack "#RPT_FlightTimeSummary")] . span_ [class_ "entrytag"] $ "RPT"
-        h3_ [class_ "flighttimereportname"] "Flight Time Summary Report"          
+        h3_ [class_ "flighttimereportname"] "Flight Time Summary Report"
         ul_ [] $
           do  li_ [] $
                 do  span_ [class_ "key"] "Total Flights: "
@@ -327,16 +304,29 @@ htmlFlightTimeReport _ r =
                                 span_ [class_ "value"] .
                                   htmlTimeAmount $ r ^. hoursNightInCommand
               li_ [] $
+                do  span_ [class_ "key"] "Hours providing instruction: "
+                    span_ [class_ "value"] .
+                      htmlTimeAmount $ r ^. hoursInstructing
+                    ul_ [] $
+                      do  li_ [] $
+                            do  span_ [class_ "key"] " RA instruction: "
+                                span_ [class_ "value"] .
+                                  htmlTimeAmount $ r ^. hoursRAInstructing
+                          li_ [] $
+                            do  span_ [class_ "key"] "GA instruction: "
+                                span_ [class_ "value"] .
+                                  htmlTimeAmount $ r ^. hoursGAInstructing
+              li_ [] $
                 do  span_ [class_ "key"] "Hours with PiC: "
                     div_ [class_ "value"] .
                       ul_ [] . Map.foldrWithKey (\a t x ->
                         do  li_ [] $
-                              do  span_ [class_ "key"] $ 
+                              do  span_ [class_ "key"] $
                                     do  htmlAviatorShort a
                                         ": "
-                                  span_ [class_ "value"] . htmlTimeAmount $ t                                      
+                                  span_ [class_ "value"] . htmlTimeAmount $ t
                             x) mempty $ r ^. hoursWithPiC
               li_ [] $
                 do  span_ [class_ "key"] "Hours instrument in-flight: "
                     span_ [class_ "value"] .
-                      htmlTimeAmount $ r ^. hoursInstrument  
+                      htmlTimeAmount $ r ^. hoursInstrument

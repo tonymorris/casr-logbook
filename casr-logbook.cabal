@@ -1,13 +1,13 @@
 name:               casr-logbook
-version:            0.5.4
+version:            0.6.0
 license:            OtherLicense
 license-file:       LICENSE
 author:             Tony Morris <ʇǝu˙sıɹɹoɯʇ@ןןǝʞsɐɥ>
 maintainer:         Tony Morris
-copyright:          Copyright (C) 2016 Tony Morris
+copyright:          Copyright (C) 2016-2021 Tony Morris
 synopsis:           CASR 61.345 Pilot Personal Logbook
 category:           Aviation
-description:        
+description:
   <<https://i.imgur.com/p6LT40r.png>>
   .
   CASR 61.345 Pilot Personal Logbook
@@ -91,6 +91,7 @@ library
                     Data.Aviation.Casr.Logbook.Types.Entry
                     Data.Aviation.Casr.Logbook.Types.Entries
                     Data.Aviation.Casr.Logbook.Types.Logbook
+                    Data.Aviation.Casr.Logbook.Types.Instruction
 
                     Data.Aviation.Casr.Logbook.Html.Html
                     Data.Aviation.Casr.Logbook.Meta.Html

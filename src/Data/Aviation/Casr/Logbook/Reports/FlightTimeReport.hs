@@ -8,28 +8,24 @@ module Data.Aviation.Casr.Logbook.Reports.FlightTimeReport(
 ) where
 
 import Control.Category((.))
-import Control.Lens(makeClassy, (^.))
+import Control.Lens ( (^.), view, makeClassy )
 import Data.Aviation.Casr.Logbook.Types
-  (
-    TimeAmount
-  , Aviator
-  , Logbook(Logbook)
-  , Command(ICUS, Dual, InCommand)
-  , Engine(Single, Multi)
-  , Entry(AircraftFlightEntry)
-  , Entries(Entries)
-  , aircraftEngine
-  , aircraftRegistration
-  , aircraftType
-  , instrumentflightTime
-  , getInstructingPic
-  , flightaircraft
-  , command
-  , daynight
-  , dayDayNight
-  , nightDayNight
-  , totalDayNight
-  )
+    ( Engine(Multi, Single),
+      TimeAmount,
+      Aviator,
+      HasAircraft(aircraftRegistration, aircraftType, aircraftEngine),
+      HasDayNight(nightDayNight, dayDayNight),
+      totalDayNight,
+      Command(InCommandInstructing, InCommand, Dual, ICUS),
+      HasAircraftFlight(instrumentflightTime, flightaircraft, command,
+                        daynight),
+      Entry(AircraftFlightEntry),
+      Entries(Entries),
+      Logbook(Logbook),
+      HasInstructionRating(instructionRating),
+      getUnderInstructionPic,
+      isRAInstruction,
+      isGAInstruction )
 import Data.Eq(Eq)
 import Data.Foldable(foldl')
 import Data.Int(Int)
@@ -47,59 +43,65 @@ data FlightTimeReport =
     _flightsTotal ::
       Int
   , _hoursTotal ::
-      TimeAmount 
+      TimeAmount
   , _hoursTotalICUS ::
-      TimeAmount 
+      TimeAmount
   , _hoursTotalDual ::
-      TimeAmount 
+      TimeAmount
   , _hoursTotalInCommand ::
-      TimeAmount 
+      TimeAmount
   , _hoursInAircraftType ::
       Map String (TimeAmount, TimeAmount, TimeAmount, TimeAmount)
   , _hoursInAircraftRegistration ::
       Map String (TimeAmount, TimeAmount, TimeAmount, TimeAmount)
   , _hoursSingleEngine ::
-      TimeAmount 
+      TimeAmount
   , _hoursSingleEngineICUS ::
-      TimeAmount 
-  , _hoursSingleEngineDual :: 
-      TimeAmount 
+      TimeAmount
+  , _hoursSingleEngineDual ::
+      TimeAmount
   , _hoursSingleEngineInCommand ::
-      TimeAmount 
+      TimeAmount
   , _hoursMultiEngine ::
-      TimeAmount 
+      TimeAmount
   , _hoursMultiEngineICUS ::
-      TimeAmount 
+      TimeAmount
   , _hoursMultiEngineDual ::
-      TimeAmount 
+      TimeAmount
   , _hoursMultiEngineInCommand ::
-      TimeAmount 
+      TimeAmount
   , _hoursDay ::
-      TimeAmount 
+      TimeAmount
   , _hoursDayICUS ::
-      TimeAmount 
+      TimeAmount
   , _hoursDayDual ::
-      TimeAmount 
+      TimeAmount
   , _hoursDayInCommand ::
-      TimeAmount 
+      TimeAmount
+  , _hoursInstructing ::
+      TimeAmount
+  , _hoursGAInstructing ::
+      TimeAmount
+  , _hoursRAInstructing ::
+      TimeAmount
   , _hoursNight ::
-      TimeAmount 
+      TimeAmount
   , _hoursNightICUS ::
-      TimeAmount 
+      TimeAmount
   , _hoursNightDual ::
-      TimeAmount 
+      TimeAmount
   , _hoursNightInCommand ::
-      TimeAmount 
+      TimeAmount
   , _hoursWithPiC ::
       Map Aviator TimeAmount
   , _hoursInstrument ::
-      TimeAmount 
+      TimeAmount
   } deriving (Eq, Ord, Show)
 
 makeClassy ''FlightTimeReport
 
 instance Semigroup FlightTimeReport where
-  FlightTimeReport ft1 tl1 tli1 tld1 tlc1 tp1 rg1 se1 sei1 sed1 sec1 me1 mei1 med1 mec1 dy1 dyi1 dyd1 dyc1 nt1 nti1 ntd1 ntc1 wpc1 is1 <> FlightTimeReport ft2 tl2 tli2 tld2 tlc2 tp2 rg2 se2 sei2 sed2 sec2 me2 mei2 med2 mec2 dy2 dyi2 dyd2 dyc2 nt2 nti2 ntd2 ntc2 wpc2 is2 =
+  FlightTimeReport ft1 tl1 tli1 tld1 tlc1 tp1 rg1 se1 sei1 sed1 sec1 me1 mei1 med1 mec1 dy1 dyi1 dyd1 dyc1 ins1 insr1 insg1 nt1 nti1 ntd1 ntc1 wpc1 is1 <> FlightTimeReport ft2 tl2 tli2 tld2 tlc2 tp2 rg2 se2 sei2 sed2 sec2 me2 mei2 med2 mec2 dy2 dyi2 dyd2 dyc2 ins2 insr2 insg2 nt2 nti2 ntd2 ntc2 wpc2 is2 =
     FlightTimeReport
       (ft1 + ft2)
       (tl1 <> tl2)
@@ -120,6 +122,9 @@ instance Semigroup FlightTimeReport where
       (dyi1 <> dyi2)
       (dyd1 <> dyd2)
       (dyc1 <> dyc2)
+      (ins1 <> ins2)
+      (insr1 <> insr2)
+      (insg1 <> insg2)
       (nt1 <> nt2)
       (nti1 <> nti2)
       (ntd1 <> ntd2)
@@ -131,6 +136,9 @@ instance Monoid FlightTimeReport where
   mempty =
     FlightTimeReport
       0
+      mempty
+      mempty
+      mempty
       mempty
       mempty
       mempty
@@ -171,6 +179,8 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
             mempty
           InCommand ->
             mempty
+          InCommandInstructing _ ->
+            mempty
       dual x =
         case fl ^. command of
           ICUS _ ->
@@ -178,7 +188,9 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
           Dual _ ->
             x
           InCommand ->
-            mempty            
+            mempty
+          InCommandInstructing _ ->
+            mempty
       comd x =
         case fl ^. command of
           ICUS _ ->
@@ -187,8 +199,40 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
             mempty
           InCommand ->
             x
+          InCommandInstructing _ ->
+            mempty
+      instr x =
+        case fl ^. command of
+          ICUS _ ->
+            mempty
+          Dual _ ->
+            mempty
+          InCommand ->
+            mempty
+          InCommandInstructing _ ->
+            x
+      instrRA x =
+        case fl ^. command of
+          ICUS _ ->
+            mempty
+          Dual _ ->
+            mempty
+          InCommand ->
+            mempty
+          InCommandInstructing a ->
+            if isRAInstruction (view instructionRating a) then x else mempty
+      instrGA x =
+        case fl ^. command of
+          ICUS _ ->
+            mempty
+          Dual _ ->
+            mempty
+          InCommand ->
+            mempty
+          InCommandInstructing a ->
+            if isGAInstruction (view instructionRating a) then x else mempty
       hoursmap k =
-        Map.singleton k (hoursdaynight, (icus hoursdaynight), (dual hoursdaynight), (comd hoursdaynight))
+        Map.singleton k (hoursdaynight, icus hoursdaynight, dual hoursdaynight, comd hoursdaynight)
       singleengine x =
         case fl ^. flightaircraft . aircraftEngine of
           Single ->
@@ -206,7 +250,7 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
       totalhoursnight =
         fl ^. daynight . nightDayNight
       pic x =
-        case getInstructingPic (fl ^. command) of
+        case getUnderInstructionPic (fl ^. command) of
           Just a ->
             Map.singleton a x
           Nothing ->
@@ -228,9 +272,12 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
         (multiengine (dual hoursdaynight))
         (multiengine (comd hoursdaynight))
         totalhoursday
-        (icus totalhoursday)
-        (dual totalhoursday)
-        (comd totalhoursday)
+        (icus hoursdaynight)
+        (dual hoursdaynight)
+        (comd hoursdaynight)
+        (instr hoursdaynight)
+        (instrRA hoursdaynight)
+        (instrGA hoursdaynight)
         totalhoursnight
         (icus totalhoursnight)
         (dual totalhoursnight)

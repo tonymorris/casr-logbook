@@ -1,3 +1,7 @@
+0.6.0
+
+* Add instruction to flight time report.
+
 0.5.4
 
 * Update `digit` dependency.

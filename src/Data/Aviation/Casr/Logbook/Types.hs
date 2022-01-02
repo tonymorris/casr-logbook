@@ -20,3 +20,4 @@ import Data.Aviation.Casr.Logbook.Types.Exam as L
 import Data.Aviation.Casr.Logbook.Types.Briefing as L
 import Data.Aviation.Casr.Logbook.Types.Entry as L
 import Data.Aviation.Casr.Logbook.Types.Entries as L
+import Data.Aviation.Casr.Logbook.Types.Instruction as L

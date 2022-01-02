@@ -4,11 +4,12 @@
 module Data.Aviation.Casr.Logbook.Types.Command(
   Command(..)
 , AsCommand(..)
-, getInstructingPic
+, getUnderInstructionPic
 ) where
 
 import Control.Lens(makeClassyPrisms)
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
+import Data.Aviation.Casr.Logbook.Types.Instruction
 import Data.Eq(Eq)
 import Data.Maybe(Maybe(Just, Nothing))
 import Data.Ord(Ord)
@@ -18,16 +19,19 @@ data Command =
   ICUS Aviator
   | Dual Aviator
   | InCommand
+  | InCommandInstructing Instruction
   deriving (Eq, Ord, Show)
 
 makeClassyPrisms ''Command
 
-getInstructingPic ::
+getUnderInstructionPic ::
   Command
   -> Maybe Aviator
-getInstructingPic (ICUS a) =
+getUnderInstructionPic (ICUS a) =
   Just a
-getInstructingPic (Dual a) =
+getUnderInstructionPic (Dual a) =
   Just a
-getInstructingPic InCommand =
+getUnderInstructionPic InCommand =
+  Nothing
+getUnderInstructionPic (InCommandInstructing _) =
   Nothing
