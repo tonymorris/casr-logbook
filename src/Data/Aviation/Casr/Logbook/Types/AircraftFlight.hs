@@ -11,6 +11,7 @@ module Data.Aviation.Casr.Logbook.Types.AircraftFlight(
 , commandonlyflight
 , noif_commandonlyflight
 , instructionflight
+, noif_instructionflight
 ) where
 
 import Control.Category((.))
@@ -137,6 +138,20 @@ commandonlyflight n a t p i =
     []
     i
 
+noif_commandonlyflight ::
+  String
+  -> Aircraft
+  -> DayNight
+  -> FlightPath
+  -> AircraftFlight
+noif_commandonlyflight n a t p =
+  commandonlyflight
+    n
+    a
+    t
+    p
+    zerotimeamount
+
 instructionflight ::
   String
   -> Aircraft
@@ -155,16 +170,19 @@ instructionflight n a s t p i =
     []
     i
 
-noif_commandonlyflight ::
+noif_instructionflight ::
   String
   -> Aircraft
+  -> Instruction
   -> DayNight
   -> FlightPath
   -> AircraftFlight
-noif_commandonlyflight n a t p =
-  commandonlyflight
+noif_instructionflight n a s t p =
+  AircraftFlight
     n
     a
+    (InCommandInstructing s)
     t
     p
+    []
     zerotimeamount
