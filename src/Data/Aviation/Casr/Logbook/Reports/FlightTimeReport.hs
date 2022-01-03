@@ -101,7 +101,7 @@ data FlightTimeReport =
 makeClassy ''FlightTimeReport
 
 instance Semigroup FlightTimeReport where
-  FlightTimeReport ft1 tl1 tli1 tld1 tlc1 tp1 rg1 se1 sei1 sed1 sec1 me1 mei1 med1 mec1 dy1 dyi1 dyd1 dyc1 ins1 insr1 insg1 nt1 nti1 ntd1 ntc1 wpc1 is1 <> FlightTimeReport ft2 tl2 tli2 tld2 tlc2 tp2 rg2 se2 sei2 sed2 sec2 me2 mei2 med2 mec2 dy2 dyi2 dyd2 dyc2 ins2 insr2 insg2 nt2 nti2 ntd2 ntc2 wpc2 is2 =
+  FlightTimeReport ft1 tl1 tli1 tld1 tlc1 tp1 rg1 se1 sei1 sed1 sec1 me1 mei1 med1 mec1 dy1 dyi1 dyd1 dyc1 ins1 insg1 insr1 nt1 nti1 ntd1 ntc1 wpc1 is1 <> FlightTimeReport ft2 tl2 tli2 tld2 tlc2 tp2 rg2 se2 sei2 sed2 sec2 me2 mei2 med2 mec2 dy2 dyi2 dyd2 dyc2 ins2 insg2 insr2 nt2 nti2 ntd2 ntc2 wpc2 is2 =
     FlightTimeReport
       (ft1 + ft2)
       (tl1 <> tl2)
@@ -123,8 +123,8 @@ instance Semigroup FlightTimeReport where
       (dyd1 <> dyd2)
       (dyc1 <> dyc2)
       (ins1 <> ins2)
-      (insr1 <> insr2)
       (insg1 <> insg2)
+      (insr1 <> insr2)
       (nt1 <> nt2)
       (nti1 <> nti2)
       (ntd1 <> ntd2)
@@ -276,8 +276,8 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
         (dual hoursdaynight)
         (comd hoursdaynight)
         (instr hoursdaynight)
-        (instrRA hoursdaynight)
         (instrGA hoursdaynight)
+        (instrRA hoursdaynight)
         totalhoursnight
         (icus totalhoursnight)
         (dual totalhoursnight)
