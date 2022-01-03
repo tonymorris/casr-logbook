@@ -10,14 +10,16 @@ module Data.Aviation.Casr.Logbook.Types.AircraftFlight(
 , noif_dualonlyflight
 , commandonlyflight
 , noif_commandonlyflight
+, instructionflight
 ) where
 
 import Control.Category((.))
 import Control.Lens(makeClassy)
 import Data.Aviation.Casr.Logbook.Types.Aircraft(Aircraft, HasAircraft(aircraft))
-import Data.Aviation.Casr.Logbook.Types.Command(Command(ICUS, Dual, InCommand))
+import Data.Aviation.Casr.Logbook.Types.Command ( Command(..) )
 import Data.Aviation.Casr.Logbook.Types.DayNight(DayNight, HasDayNight(dayNight))
 import Data.Aviation.Casr.Logbook.Types.FlightPath(FlightPath, HasFlightPath(flightPath))
+import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction )
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
 import Data.Aviation.Casr.Logbook.Types.TimeAmount(TimeAmount, zerotimeamount)
 import Data.Eq(Eq)
@@ -49,7 +51,7 @@ instance HasDayNight AircraftFlight where
 instance HasFlightPath AircraftFlight where
   flightPath =
     flightpath . flightPath
-    
+
 icusonlyflight ::
   String
   -> Aircraft
@@ -130,6 +132,24 @@ commandonlyflight n a t p i =
     n
     a
     InCommand
+    t
+    p
+    []
+    i
+
+instructionflight ::
+  String
+  -> Aircraft
+  -> Instruction
+  -> DayNight
+  -> FlightPath
+  -> TimeAmount
+  -> AircraftFlight
+instructionflight n a s t p i =
+  AircraftFlight
+    n
+    a
+    (InCommandInstructing s)
     t
     p
     []

@@ -9,7 +9,7 @@ module Data.Aviation.Casr.Logbook.Types.Command(
 
 import Control.Lens(makeClassyPrisms)
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
-import Data.Aviation.Casr.Logbook.Types.Instruction
+import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction )
 import Data.Eq(Eq)
 import Data.Maybe(Maybe(Just, Nothing))
 import Data.Ord(Ord)
