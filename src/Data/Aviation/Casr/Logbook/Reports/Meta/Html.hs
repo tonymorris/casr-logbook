@@ -37,8 +37,8 @@ htmlExpenseReport ::
 htmlExpenseReport _ (ExpenseReport ag al b e s) =
   div_ [class_ "expensereport"] $
     do  a_ [id_ "RPT_Expense"] ""
-        a_ [href_ (Text.pack ("#RPT_Expense"))] . span_ [class_ "entrytag"] $ "RPT"
-        h3_ [class_ "expensereportname"] "Expense Report"     
+        a_ [href_ (Text.pack "#RPT_Expense")] . span_ [class_ "entrytag"] $ "RPT"
+        h3_ [class_ "expensereportname"] "Expense Report"
         do  ul_ [] $
               do  li_ [] $
                     do  span_ [class_ "key"] "Aircraft: "
@@ -68,9 +68,9 @@ htmlReports ::
   -> Html ()
 htmlReports b =
   do  htmlFlightTimeReport b (getFlightTimeReport b)
-      hr_ [] 
+      hr_ []
       htmlSimulatorTimeReport b (getSimulatorTimeReport b)
-      hr_ [] 
+      hr_ []
       htmlTakeOffLanding90 b (takeoffslandings90 b)
-      hr_ [] 
+      hr_ []
       htmlExpenseReport b (logbookExpenseReport b)

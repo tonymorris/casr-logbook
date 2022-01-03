@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.Aviation.Casr.Logbook.Html.Html(
@@ -47,51 +48,9 @@ module Data.Aviation.Casr.Logbook.Html.Html(
 
 import Control.Applicative((*>))
 import Control.Category((.), id)
-import Control.Lens((^.), ( # ))
+import Control.Lens
 import Control.Monad(when, (=<<), (>>=))
-import Data.Aviation.Casr.Logbook.Types(
-    arn
-  , firstname
-  , surname
-  , logbookaviator
-  , daytime
-  , briefingTime
-  , briefingName
-  , examName
-  , examTime
-  , simulatorflightname
-  , simulatortype
-  , point
-  , flightStart
-  , flightEnd
-  , flightpath
-  , aircraftRegistration
-  , aircraftflightname
-  , flightaircraft
-  , landingTime
-  , zerotimeamount
-  , flightPathList
-  , Command(ICUS, Dual, InCommand, InCommandInstructing)
-  , Rating(Rating)
-  , Aircraft(Aircraft)
-  , Engine(Single, Multi)
-  , FlightPath
-  , FlightPoint(FlightPoint)
-  , Time(Time)
-  , TimeAmount(TimeAmount)
-  , DayNight(DayNight)
-  , Briefing(Briefing)
-  , Exam(Exam)
-  , Location(Location)
-  , Aviator(Aviator)
-  , Entries(Entries)
-  , Logbook(Logbook)
-  , AircraftFlight(AircraftFlight)
-  , SimulatorFlight(SimulatorFlight)
-  , Briefing
-  , Exam
-  , Entry(BriefingEntry, ExamEntry, SimulatorFlightEntry, AircraftFlightEntry)
-  )
+import Data.Aviation.Casr.Logbook.Types
 import Data.Bool(not)
 import Data.Char(toUpper)
 import Data.Digit(DecDigit, charDecimal)
@@ -137,7 +96,7 @@ import Lucid(
   )
 import Text.Printf(printf)
 
-import Prelude(show, fromIntegral, (/), (*), Double, undefined)
+import Prelude(show, fromIntegral, (/), (*), Double)
 
 htmlTimeAmount ::
   TimeAmount
@@ -268,9 +227,9 @@ htmlAviatorShort (Aviator s f a _ r) =
   do  fromString f
       " "
       fromString s
-      when (not . null $ a) $ " "
+      when (not . null $ a) " "
       fromString (a >>= (\d -> [charDecimal # d]))
-      when (not . null $ r) $ " "
+      when (not . null $ r) " "
       htmlRatingsShort r
 
 htmlFlightPoint ::
@@ -289,21 +248,35 @@ htmlFlightPath fl p =
   span_ [class_ "flightpath"] $
     fold (intersperse (toHtmlRaw (" &mdash; " :: Text)) (htmlFlightPoint fl <$> flightPathList p))
 
+htmlInstruction ::
+  Instruction
+  -> Html ()
+htmlInstruction i =
+  let r = view instructionRating i
+      l = view instructionLesson i
+      a = view student l
+  in  do  span_ [class_ "instructionrating"] (toHtmlRaw (shortStringRating r))
+          span_ [class_ "commandphrase"] " for "
+          span_ [class_ "commandaviator"] $ htmlAviatorShort a
+          span_ [class_ "instructionlesson"] $ maybe mempty (\c -> toHtmlRaw (' ':c)) (view lesson l)
+
 htmlCommand ::
   AircraftFlight
   -> Command
   -> Html ()
 htmlCommand _ InCommand =
   span_ [class_ "command incommand"] "In-Command"
-htmlCommand _ (InCommandInstructing _) =
-  undefined
+htmlCommand _ (InCommandInstructing a) =
+  do  span_ [class_ "command incommandinstruction"] "Instruction"
+      span_ [class_ "commandphrase"] " as "
+      span_ [class_ "commandinstruction"] $ htmlInstruction a
 htmlCommand _ (ICUS a) =
   do  span_ [class_ "command incommandunderinstruction"] "In-Command Under-Instruction"
-      span_ [class_ "commandphrase"] $ " by "
+      span_ [class_ "commandphrase"] " by "
       span_ [class_ "commandaviator"] $ htmlAviatorShort a
 htmlCommand _ (Dual a) =
   do  span_ [class_ "command dualunderinstruction"] "Dual Under-Instruction"
-      span_ [class_ "commandphrase"] $ " by "
+      span_ [class_ "commandphrase"] " by "
       span_ [class_ "commandaviator"] $ htmlAviatorShort a
 
 htmlTimeAmountZero ::

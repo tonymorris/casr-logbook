@@ -49,6 +49,20 @@ isGAInstruction x =
   isn't _RAInstructionRating x &&
   isn't _RASIInstructionRating x
 
+shortStringRating ::
+  InstructionRating
+  -> String
+shortStringRating GA3InstructionRating =
+  "GA3"
+shortStringRating GA2InstructionRating =
+  "GA3"
+shortStringRating GA1InstructionRating =
+  "GA1"
+shortStringRating RAInstructionRating =
+  "RA"
+shortStringRating RASIInstructionRating =
+  "RA SI"
+
 data Instruction =
   Instruction {
     __instructionLesson :: InstructionLesson
