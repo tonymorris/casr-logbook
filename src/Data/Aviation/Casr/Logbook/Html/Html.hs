@@ -258,7 +258,10 @@ htmlInstruction i =
   in  do  span_ [class_ "instructionrating"] (toHtmlRaw (shortStringRating r))
           span_ [class_ "commandphrase"] " for "
           span_ [class_ "commandaviator"] $ htmlAviatorShort a
-          span_ [class_ "instructionlesson"] $ maybe mempty (\c -> toHtmlRaw (' ':c)) (view lesson l)
+          maybe mempty (\c ->
+              do  span_ [class_ "commandphrase"] " "
+                  span_ [class_ "instructionlesson"] (toHtmlRaw c)
+            ) (view lesson l)
 
 htmlCommand ::
   AircraftFlight
