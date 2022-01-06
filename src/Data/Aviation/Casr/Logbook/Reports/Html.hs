@@ -29,23 +29,6 @@ import Data.Aviation.Casr.Logbook.Html.Html(
   , htmlAviatorShort
   )
 import Data.Aviation.Casr.Logbook.Reports
-    ( TakeOffLanding90(TakeOffLanding90),
-      SimulatorTimeReport,
-      FlightTimeReport,
-      HasSimulatorTimeReport(hoursTotalSimulator,
-                             hoursInstrumentSimulator),
-      HasTakeOffLanding90(currency90, landing3, landing2, landing1,
-                          takeoff3, takeoff2, takeoff1),
-      HasFlightTimeReport(hoursInstrument, hoursWithPiC,
-                          hoursGAInstructing, hoursRAInstructing, hoursInstructing,
-                          hoursNightInCommand, hoursNightDual, hoursNightICUS, hoursNight,
-                          hoursDayInCommand, hoursDayDual, hoursDayICUS, hoursDay,
-                          hoursMultiEngineInCommand, hoursMultiEngineDual,
-                          hoursMultiEngineICUS, hoursMultiEngine, hoursSingleEngineInCommand,
-                          hoursSingleEngineDual, hoursSingleEngineICUS, hoursSingleEngine,
-                          hoursInAircraftRegistration, hoursInAircraftType,
-                          hoursTotalInCommand, hoursTotalDual, hoursTotalICUS, hoursTotal,
-                          flightsTotal) )
 import Data.Foldable(foldr)
 import Data.Function(flip, ($))
 import qualified Data.Map as Map(foldrWithKey)
@@ -195,6 +178,10 @@ htmlFlightTimeReport _ r =
                             do  span_ [class_ "key"] "in-command: "
                                 span_ [class_ "value"] .
                                   htmlTimeAmount $ r ^. hoursTotalInCommand
+                          li_ [] $
+                            do  span_ [class_ "key"] "providing instruction: "
+                                span_ [class_ "value"] .
+                                  htmlTimeAmount $ r ^. hoursInstructing
               li_ [] $
                 do  span_ [class_ "key"] "Hours in type: "
                     div_ [class_ "value"] .
@@ -304,18 +291,40 @@ htmlFlightTimeReport _ r =
                                 span_ [class_ "value"] .
                                   htmlTimeAmount $ r ^. hoursNightInCommand
               li_ [] $
-                do  span_ [class_ "key"] "Hours providing instruction: "
+                do  span_ [class_ "key"] "providing instruction: "
                     span_ [class_ "value"] .
                       htmlTimeAmount $ r ^. hoursInstructing
                     ul_ [] $
                       do  li_ [] $
-                            do  span_ [class_ "key"] " RA instruction: "
+                            do  span_ [class_ "key"] "providing RA instruction: "
                                 span_ [class_ "value"] .
                                   htmlTimeAmount $ r ^. hoursRAInstructing
+                                ul_ [] $
+                                  do  li_ [] $
+                                        do  span_ [class_ "key"] "providing RA Junior instruction: "
+                                            span_ [class_ "value"] .
+                                              htmlTimeAmount $ r ^. hoursRAJuniorInstructing
+                                      li_ [] $
+                                        do  span_ [class_ "key"] "providing RA Senior instruction: "
+                                            span_ [class_ "value"] .
+                                              htmlTimeAmount $ r ^. hoursRASeniorInstructing
                           li_ [] $
-                            do  span_ [class_ "key"] "GA instruction: "
+                            do  span_ [class_ "key"] "providing GA instruction: "
                                 span_ [class_ "value"] .
                                   htmlTimeAmount $ r ^. hoursGAInstructing
+                                ul_ [] $
+                                  do  li_ [] $
+                                        do  span_ [class_ "key"] "providing GA 1 instruction: "
+                                            span_ [class_ "value"] .
+                                              htmlTimeAmount $ r ^. hoursGA1Instructing
+                                      li_ [] $
+                                        do  span_ [class_ "key"] "providing GA 2 instruction: "
+                                            span_ [class_ "value"] .
+                                              htmlTimeAmount $ r ^. hoursGA2Instructing
+                                      li_ [] $
+                                        do  span_ [class_ "key"] "providing GA 3 instruction: "
+                                            span_ [class_ "value"] .
+                                              htmlTimeAmount $ r ^. hoursGA3Instructing
               li_ [] $
                 do  span_ [class_ "key"] "Hours with PiC: "
                     div_ [class_ "value"] .

@@ -5,11 +5,13 @@ module Data.Aviation.Casr.Logbook.Types.Command(
   Command(..)
 , AsCommand(..)
 , getUnderInstructionPic
+, isAeronauticalHours
 ) where
 
 import Control.Lens(makeClassyPrisms)
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
 import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction )
+import Data.Bool ( Bool(..) )
 import Data.Eq(Eq)
 import Data.Maybe(Maybe(Just, Nothing))
 import Data.Ord(Ord)
@@ -20,6 +22,7 @@ data Command =
   | Dual Aviator
   | InCommand
   | InCommandInstructing Instruction
+  | ApprovedSolo Aviator
   deriving (Eq, Ord, Show)
 
 makeClassyPrisms ''Command
@@ -35,3 +38,19 @@ getUnderInstructionPic InCommand =
   Nothing
 getUnderInstructionPic (InCommandInstructing _) =
   Nothing
+getUnderInstructionPic (ApprovedSolo _) =
+  Nothing
+
+isAeronauticalHours ::
+  Command
+  -> Bool
+isAeronauticalHours (ICUS _) =
+  True
+isAeronauticalHours (Dual _) =
+  True
+isAeronauticalHours InCommand =
+  True
+isAeronauticalHours (InCommandInstructing _) =
+  True
+isAeronauticalHours (ApprovedSolo _) =
+  False

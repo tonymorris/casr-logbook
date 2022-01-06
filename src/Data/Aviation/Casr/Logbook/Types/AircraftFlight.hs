@@ -12,17 +12,22 @@ module Data.Aviation.Casr.Logbook.Types.AircraftFlight(
 , noif_commandonlyflight
 , instructionflight
 , noif_instructionflight
+, aeronauticalHours
 ) where
 
 import Control.Category((.))
-import Control.Lens(makeClassy)
+import Control.Lens ( view, makeClassy )
 import Data.Aviation.Casr.Logbook.Types.Aircraft(Aircraft, HasAircraft(aircraft))
-import Data.Aviation.Casr.Logbook.Types.Command ( Command(..) )
-import Data.Aviation.Casr.Logbook.Types.DayNight(DayNight, HasDayNight(dayNight))
+import Data.Aviation.Casr.Logbook.Types.Command
+    ( Command(InCommandInstructing, InCommand, Dual, ICUS),
+      isAeronauticalHours )
+import Data.Aviation.Casr.Logbook.Types.DayNight
+    ( DayNight(DayNight), HasDayNight(dayNight) )
 import Data.Aviation.Casr.Logbook.Types.FlightPath(FlightPath, HasFlightPath(flightPath))
 import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction )
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
-import Data.Aviation.Casr.Logbook.Types.TimeAmount(TimeAmount, zerotimeamount)
+import Data.Aviation.Casr.Logbook.Types.TimeAmount
+    ( TimeAmount, zerotimeamount )
 import Data.Eq(Eq)
 import Data.Ord(Ord)
 import Data.String(String)
@@ -186,3 +191,13 @@ noif_instructionflight n a s t p =
     p
     []
     zerotimeamount
+
+aeronauticalHours ::
+  AircraftFlight
+  -> DayNight
+aeronauticalHours fl =
+  if isAeronauticalHours (view command fl)
+    then
+      view dayNight fl
+    else
+      DayNight zerotimeamount zerotimeamount

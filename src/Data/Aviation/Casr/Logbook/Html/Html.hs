@@ -51,6 +51,40 @@ import Control.Category((.), id)
 import Control.Lens
 import Control.Monad(when, (=<<), (>>=))
 import Data.Aviation.Casr.Logbook.Types
+    ( Location(Location),
+      Engine(..),
+      Time(Time),
+      TimeAmount(TimeAmount),
+      HasTime(daytime),
+      zerotimeamount,
+      Rating(Rating),
+      Aircraft(Aircraft),
+      FlightPoint(FlightPoint),
+      Aviator(Aviator),
+      HasAircraft(aircraftRegistration),
+      DayNight(DayNight),
+      HasFlightPoint(point, landingTime),
+      HasAviator(arn, surname, firstname),
+      FlightPath,
+      HasFlightPath(flightEnd, flightStart),
+      flightPathList,
+      Command(..),
+      SimulatorFlight(SimulatorFlight),
+      Briefing(Briefing),
+      Exam(Exam),
+      HasExam(examTime, examName),
+      HasSimulatorFlight(simulatortype, simulatorflightname),
+      HasBriefing(briefingTime, briefingName),
+      AircraftFlight(AircraftFlight),
+      HasAircraftFlight(flightpath, flightaircraft, aircraftflightname),
+      Entry(..),
+      Entries(..),
+      Logbook(Logbook),
+      HasLogbook(logbookaviator),
+      Instruction,
+      HasInstructionRating(instructionRating),
+      HasInstructionLesson(lesson, student, instructionLesson),
+      shortStringRating )
 import Data.Bool(not)
 import Data.Char(toUpper)
 import Data.Digit(DecDigit, charDecimal)
@@ -176,8 +210,8 @@ htmlAviatorName s f =
         do  span_ [class_ "key"] "Name: "
             span_ [class_ "value"] $
               do  fromString (toUpper <$> s)
-                  ", "
-                  fromString f
+                  when (not . null $ f) $
+                    toHtmlRaw (", " <> f)
 
 htmlAviatorARN ::
   [DecDigit]
@@ -279,6 +313,10 @@ htmlCommand _ (ICUS a) =
       span_ [class_ "commandaviator"] $ htmlAviatorShort a
 htmlCommand _ (Dual a) =
   do  span_ [class_ "command dualunderinstruction"] "Dual Under-Instruction"
+      span_ [class_ "commandphrase"] " by "
+      span_ [class_ "commandaviator"] $ htmlAviatorShort a
+htmlCommand _ (ApprovedSolo a) =
+  do  span_ [class_ "command approvedsolo"] "Approved Solo"
       span_ [class_ "commandphrase"] " by "
       span_ [class_ "commandaviator"] $ htmlAviatorShort a
 
