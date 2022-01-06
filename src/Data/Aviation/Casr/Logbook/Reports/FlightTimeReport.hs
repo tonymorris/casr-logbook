@@ -10,26 +10,6 @@ module Data.Aviation.Casr.Logbook.Reports.FlightTimeReport(
 import Control.Category((.))
 import Control.Lens ( preview, (^.), view, isn't, makeClassy )
 import Data.Aviation.Casr.Logbook.Types
-    ( TimeAmount,
-      AsEngine(_Multi, _Single),
-      Aviator,
-      HasAircraft(aircraftRegistration, aircraftType, aircraftEngine),
-      HasDayNight(nightDayNight, dayDayNight),
-      totalDayNight,
-      AsCommand(_InCommandInstructing, _InCommand, _Dual, _ICUS),
-      HasAircraftFlight(instrumentflightTime, daynight, flightaircraft,
-                        command),
-      Entry(AircraftFlightEntry),
-      Entries(Entries),
-      Logbook(Logbook),
-      HasInstructionRating(instructionRating),
-      AsInstructionRating(_GA3InstructionRating, _GA2InstructionRating,
-                          _GA1InstructionRating, _RASIInstructionRating,
-                          _RAInstructionRating),
-      getUnderInstructionPic,
-      isRAInstruction,
-      isGAInstruction,
-      aeronauticalHours )
 import Data.Eq(Eq)
 import Data.Foldable(foldl')
 import Data.Int(Int)
@@ -208,7 +188,7 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
           Nothing ->
             mempty
       comd x =
-        case preview (command . _InCommand) fl of
+        case preview (command . _InCommandIncludingInstructing) fl of
           Just _ ->
             x
           Nothing ->

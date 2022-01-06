@@ -1,17 +1,22 @@
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE LambdaCase #-}
 
 module Data.Aviation.Casr.Logbook.Types.Command(
   Command(..)
 , AsCommand(..)
 , getUnderInstructionPic
 , isAeronauticalHours
+, _InCommandIncludingInstructing
 ) where
 
-import Control.Lens(makeClassyPrisms)
+import Control.Applicative
+    ( Applicative((*>)), Alternative((<|>)) )
+import Control.Lens
+    ( Prism', preview, makeClassyPrisms, isn't, prism', (#) )
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
 import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction )
-import Data.Bool ( Bool(..) )
+import Data.Bool ( Bool(..), not )
 import Data.Eq(Eq)
 import Data.Maybe(Maybe(Just, Nothing))
 import Data.Ord(Ord)
@@ -42,15 +47,25 @@ getUnderInstructionPic (ApprovedSolo _) =
   Nothing
 
 isAeronauticalHours ::
-  Command
+  AsCommand c =>
+  c
   -> Bool
-isAeronauticalHours (ICUS _) =
-  True
-isAeronauticalHours (Dual _) =
-  True
-isAeronauticalHours InCommand =
-  True
-isAeronauticalHours (InCommandInstructing _) =
-  True
-isAeronauticalHours (ApprovedSolo _) =
-  False
+isAeronauticalHours c =
+  not (isn't _ApprovedSolo c)
+
+_InCommandIncludingInstructing ::
+  AsCommand c =>
+  Prism' c (Maybe Instruction)
+_InCommandIncludingInstructing =
+  prism'
+    (\case
+      Nothing ->
+        _InCommand # ()
+      Just i ->
+        _InCommandInstructing # i
+    )
+    (
+      \c ->
+        preview _InCommand c *> Nothing <|>
+        preview _InCommandIncludingInstructing c
+    )
