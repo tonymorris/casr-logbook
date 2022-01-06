@@ -11,13 +11,14 @@ module Data.Aviation.Casr.Logbook.Types.Command(
 ) where
 
 import Control.Applicative
-    ( Applicative((*>)), Alternative((<|>)) )
+    ( Alternative((<|>)) )
 import Control.Lens
     ( Prism', preview, makeClassyPrisms, isn't, prism', (#) )
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
 import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction )
-import Data.Bool ( Bool(..), not )
+import Data.Bool ( Bool(..) )
 import Data.Eq(Eq)
+import Data.Functor ( Functor((<$)), (<$>) )
 import Data.Maybe(Maybe(Just, Nothing))
 import Data.Ord(Ord)
 import Prelude(Show)
@@ -50,8 +51,8 @@ isAeronauticalHours ::
   AsCommand c =>
   c
   -> Bool
-isAeronauticalHours c =
-  not (isn't _ApprovedSolo c)
+isAeronauticalHours =
+  isn't _ApprovedSolo
 
 _InCommandIncludingInstructing ::
   AsCommand c =>
@@ -66,6 +67,6 @@ _InCommandIncludingInstructing =
     )
     (
       \c ->
-        preview _InCommand c *> Nothing <|>
-        preview _InCommandIncludingInstructing c
+        (Nothing <$ preview _InCommand c) <|>
+        (Just <$> preview _InCommandInstructing c)
     )
