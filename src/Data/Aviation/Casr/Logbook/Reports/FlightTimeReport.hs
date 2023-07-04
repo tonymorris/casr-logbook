@@ -210,7 +210,7 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
           Nothing ->
             case preview (command . _ApprovedSolo) fl of
               Just (_, r) ->
-                if isRAInstruction r then mempty else x
+                if isRAInstruction r then x else mempty
               Nothing ->
                 mempty
       instrGA x =
@@ -220,7 +220,7 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
           Nothing ->
             case preview (command . _ApprovedSolo) fl of
               Just (_, r) ->
-                if isGAInstruction r then mempty else x
+                if isGAInstruction r then x else mempty
               Nothing ->
                 mempty
       instrRAJunior x =
