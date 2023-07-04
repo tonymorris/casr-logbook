@@ -15,7 +15,7 @@ import Control.Applicative
 import Control.Lens
     ( Prism', preview, makeClassyPrisms, isn't, prism', (#) )
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
-import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction )
+import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction, InstructionRating )
 import Data.Bool ( Bool(..) )
 import Data.Eq(Eq)
 import Data.Functor ( Functor((<$)), (<$>) )
@@ -28,7 +28,7 @@ data Command =
   | Dual Aviator
   | InCommand
   | InCommandInstructing Instruction
-  | ApprovedSolo Aviator
+  | ApprovedSolo Aviator InstructionRating
   deriving (Eq, Ord, Show)
 
 makeClassyPrisms ''Command
@@ -44,8 +44,8 @@ getUnderInstructionPic InCommand =
   Nothing
 getUnderInstructionPic (InCommandInstructing _) =
   Nothing
-getUnderInstructionPic (ApprovedSolo _) =
-  Nothing
+getUnderInstructionPic (ApprovedSolo a _)=
+  Just a
 
 isAeronauticalHours ::
   AsCommand c =>

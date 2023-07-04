@@ -315,8 +315,10 @@ htmlCommand _ (Dual a) =
   do  span_ [class_ "command dualunderinstruction"] "Dual Under-Instruction"
       span_ [class_ "commandphrase"] " by "
       span_ [class_ "commandaviator"] $ htmlAviatorShort a
-htmlCommand _ (ApprovedSolo a) =
-  do  span_ [class_ "command approvedsolo"] "Approved Solo"
+htmlCommand _ (ApprovedSolo a r) =
+  do  span_ [class_ "instructionrating"] (toHtmlRaw (shortStringRating r))
+      span_ [class_ "commandphrase"] " for "
+      span_ [class_ "command approvedsolo"] "Approved Solo"
       span_ [class_ "commandphrase"] " by "
       span_ [class_ "commandaviator"] $ htmlAviatorShort a
 
