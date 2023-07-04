@@ -198,31 +198,51 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
           Just _ ->
             x
           Nothing ->
-            mempty
+            case preview (command . _ApprovedSolo) fl of
+              Just (_, _) ->
+                x
+              Nothing ->
+                mempty
       instrRA x =
         case preview (command . _InCommandInstructing) fl of
           Just a ->
             if isRAInstruction (view instructionRating a) then x else mempty
           Nothing ->
-            mempty
+            case preview (command . _ApprovedSolo) fl of
+              Just (_, r) ->
+                if isRAInstruction r then mempty else x
+              Nothing ->
+                mempty
       instrGA x =
         case preview (command . _InCommandInstructing) fl of
           Just a ->
             if isGAInstruction (view instructionRating a) then x else mempty
           Nothing ->
-            mempty
+            case preview (command . _ApprovedSolo) fl of
+              Just (_, r) ->
+                if isGAInstruction r then mempty else x
+              Nothing ->
+                mempty
       instrRAJunior x =
         case preview (command . _InCommandInstructing) fl of
           Just a ->
             if isn't _RAInstructionRating (view instructionRating a) then mempty else x
           Nothing ->
-            mempty
+            case preview (command . _ApprovedSolo) fl of
+              Just (_, r) ->
+                if isn't _RAInstructionRating r then mempty else x
+              Nothing ->
+                mempty
       instrRASenior x =
         case preview (command . _InCommandInstructing) fl of
           Just a ->
             if isn't _RASIInstructionRating (view instructionRating a) then mempty else x
           Nothing ->
-            mempty
+            case preview (command . _ApprovedSolo) fl of
+              Just (_, r) ->
+                if isn't _RASIInstructionRating r then mempty else x
+              Nothing ->
+                mempty
       instrGA1 x =
         case preview (command . _InCommandInstructing) fl of
           Just a ->
