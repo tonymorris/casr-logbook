@@ -12,10 +12,9 @@ module Data.Aviation.Casr.Logbook.Types.Command(
 import Control.Applicative
     ( Alternative((<|>)) )
 import Control.Lens
-    ( Prism', preview, makeClassyPrisms, isn't, prism', (#) )
+    ( Prism', preview, makeClassyPrisms, prism', (#) )
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
 import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction, InstructionRating )
-import Data.Bool ( Bool(..) )
 import Data.Eq(Eq)
 import Data.Functor ( Functor((<$)), (<$>) )
 import Data.Maybe(Maybe(Just, Nothing))
