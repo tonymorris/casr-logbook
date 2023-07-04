@@ -228,19 +228,31 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
           Just a ->
             if isn't _GA1InstructionRating (view instructionRating a) then mempty else x
           Nothing ->
-            mempty
+            case preview (command . _ApprovedSolo) fl of
+              Just (_, r) ->
+                if isn't _GA1InstructionRating r then mempty else x
+              Nothing ->
+                mempty
       instrGA2 x =
         case preview (command . _InCommandInstructing) fl of
           Just a ->
             if isn't _GA2InstructionRating (view instructionRating a) then mempty else x
           Nothing ->
-            mempty
+            case preview (command . _ApprovedSolo) fl of
+              Just (_, r) ->
+                if isn't _GA2InstructionRating r then mempty else x
+              Nothing ->
+                mempty
       instrGA3 x =
         case preview (command . _InCommandInstructing) fl of
           Just a ->
             if isn't _GA3InstructionRating (view instructionRating a) then mempty else x
           Nothing ->
-            mempty
+            case preview (command . _ApprovedSolo) fl of
+              Just (_, r) ->
+                if isn't _GA3InstructionRating r then mempty else x
+              Nothing ->
+                mempty
       hoursmap k =
         Map.singleton k (hoursdaynight, icus hoursdaynight, dual hoursdaynight, comd hoursdaynight)
       singleengine x =

@@ -19,10 +19,9 @@ import Control.Category((.))
 import Control.Lens ( view, makeClassy )
 import Data.Aviation.Casr.Logbook.Types.Aircraft(Aircraft, HasAircraft(aircraft))
 import Data.Aviation.Casr.Logbook.Types.Command
-    ( Command(InCommandInstructing, InCommand, Dual, ICUS),
-      isAeronauticalHours )
+    ( Command(InCommandInstructing, InCommand, Dual, ICUS) )
 import Data.Aviation.Casr.Logbook.Types.DayNight
-    ( DayNight(DayNight), HasDayNight(dayNight) )
+    ( DayNight, HasDayNight(dayNight) )
 import Data.Aviation.Casr.Logbook.Types.FlightPath(FlightPath, HasFlightPath(flightPath))
 import Data.Aviation.Casr.Logbook.Types.Instruction ( Instruction )
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator)
@@ -196,8 +195,4 @@ aeronauticalHours ::
   AircraftFlight
   -> DayNight
 aeronauticalHours fl =
-  if isAeronauticalHours (view command fl)
-    then
-      view dayNight fl
-    else
-      DayNight zerotimeamount zerotimeamount
+  view dayNight fl

@@ -6,7 +6,6 @@ module Data.Aviation.Casr.Logbook.Types.Command(
   Command(..)
 , AsCommand(..)
 , getUnderInstructionPic
-, isAeronauticalHours
 , _InCommandIncludingInstructing
 ) where
 
@@ -46,13 +45,6 @@ getUnderInstructionPic (InCommandInstructing _) =
   Nothing
 getUnderInstructionPic (ApprovedSolo a _)=
   Just a
-
-isAeronauticalHours ::
-  AsCommand c =>
-  c
-  -> Bool
-isAeronauticalHours =
-  isn't _ApprovedSolo
 
 _InCommandIncludingInstructing ::
   AsCommand c =>
