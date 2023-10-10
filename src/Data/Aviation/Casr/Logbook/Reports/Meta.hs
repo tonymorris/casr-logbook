@@ -1,4 +1,4 @@
-{-# LANGUAGE TemplateHaskell #-}
+{-# OPTIONS_GHC -Wall #-}
 
 module Data.Aviation.Casr.Logbook.Reports.Meta(
   module M

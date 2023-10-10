@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
 
@@ -26,7 +27,7 @@ data SimulatorFlight =
   , _simulatorothercrew :: [Aviator]
   , _simulatorTime :: TimeAmount
   , _instrumentsimulatorTime :: TimeAmount
-  } deriving (Eq, Ord, Show)   
+  } deriving (Eq, Ord, Show)
 
 makeClassy ''SimulatorFlight
 
@@ -46,4 +47,3 @@ dayonlysimulator n d =
   SimulatorFlight
     n
     (dayonly d)
-    

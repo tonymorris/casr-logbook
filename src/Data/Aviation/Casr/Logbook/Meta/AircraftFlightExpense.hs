@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Data.Aviation.Casr.Logbook.Meta.AircraftFlightExpense(

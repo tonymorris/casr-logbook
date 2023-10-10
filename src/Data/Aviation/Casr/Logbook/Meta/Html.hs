@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.Aviation.Casr.Logbook.Meta.Html(
@@ -30,10 +31,11 @@ module Data.Aviation.Casr.Logbook.Meta.Html(
   , showCentsAsDollars
   , showThousandCentsAsDollars
   , showHundredCentsAsDollars
-  , whenEmpty  
+  , whenEmpty
 ) where
 
 import Control.Category((.), id)
+import Control.Lens(view)
 import Control.Monad(when)
 import Data.Aviation.Casr.Logbook.Types(
     AircraftFlight
@@ -52,7 +54,8 @@ import Data.Aviation.Casr.Logbook.Meta(
   , BriefingMeta(BriefingMeta)
   , ExamExpense(ExamExpense)
   , ExamMeta(ExamMeta)
-  , Image(Image)
+  , Image(..)
+  , HasImage(..)
   , ImageType(Jpg, Png, Gif)
   , Passenger(Passenger)
   , SimulatorFlightExpense(SimulatorFlightExpense)
@@ -66,10 +69,11 @@ import Data.Aviation.Casr.Logbook.Meta(
   , aircraftUsageCost
   , simulatorFlightCost
   , briefingCost
-  ) 
+  )
 import Data.Bool(not)
 import Data.Foldable(mapM_, null)
 import Data.Function(($))
+import Data.Functor ( (<$>) )
 import Data.Int(Int)
 import Data.List(reverse)
 import Data.Maybe(Maybe, maybe, fromMaybe)
@@ -179,7 +183,7 @@ htmlVisualisation ::
   -> Html ()
 htmlVisualisation _ (Doarama i _ n) =
   let n' = fromMaybe "doarama.com" n
-  in  do  a_ [href_ ("http://doarama.com/view/" <> Text.pack i)] $ 
+  in  do  a_ [href_ ("http://doarama.com/view/" <> Text.pack i)] $
             span_ [class_ "Visualisation_name"] (fromString n')
           -- p_ (iframe_ [src_ ("http://www.doarama.com/embed?k=" <> Text.pack e), width_ "560", height_ "315", termWith -- "allowfullscreen" [] "allowfullscreen"] "")
 
@@ -204,12 +208,13 @@ htmlImage ::
   AircraftFlight
   -> Image
   -> Html ()
-htmlImage fl (Image u t s n) =
-  let u' = fromString u      
-      n' = fromMaybe ("Image (" <> strImageType t <> ")") n
+htmlImage fl i =
+  let u' = fromString (view imageuri i)
+      s' = fromMaybe u' (fromString <$> view imageurismall i)
+      n' = fromMaybe ("Image (" <> strImageType (view imagetype i) <> ")") (view imagename i)
   in  do  a_ [href_ u'] $
-            img_ [src_ u', width_ "120", alt_ (Text.pack n')]
-          htmlImageSource fl s
+            img_ [src_ s', width_ "120", alt_ (Text.pack n')]
+          htmlImageSource fl (view imagesource i)
 
 strTrackLogType ::
   TrackLogType
@@ -240,7 +245,7 @@ htmlTrackLog fl (TrackLog u t s n) =
       o = do  fromString n'
               htmlTrackLogSource fl s
   in  do  a_ [href_ u'] o
-          case t of 
+          case t of
             ImageTrackLog _ ->
               do  br_ []
                   a_ [href_ u'] $
@@ -301,7 +306,7 @@ htmlImages ::
 htmlImages fl x =
   whenEmpty (\q -> div_ [class_ "tracklogs"] $
     do  span_ [class_ "imagesheader"] "Images"
-        div_ [style_ "text-align: justify"] $ 
+        div_ [style_ "text-align: justify"] $
           mapM_ (htmlImage fl) q) x
 
 htmlVideos ::
@@ -346,7 +351,7 @@ htmlAircraftFlightMeta ::
   -> AircraftFlightMeta
   -> Html ()
 htmlAircraftFlightMeta fl (AircraftFlightMeta tls vls ims vds exs pax) =
-  div_ $ 
+  div_ $
     do  htmlTrackLogs fl tls
         htmlVisualisations fl vls
         htmlImages fl ims
@@ -362,7 +367,7 @@ htmlSimulatorFlightMeta fl (SimulatorFlightMeta s) =
   whenEmpty (\q -> div_ [class_ "simulatormeta"] $
     do  span_ [class_ "simulatorheader"] "Expenses"
         ul_ [] $
-          mapM_ (li_ [class_ "expense"] . htmlSimulatorFlightExpense fl) q) s  
+          mapM_ (li_ [class_ "expense"] . htmlSimulatorFlightExpense fl) q) s
 
 htmlExamMeta ::
   Exam

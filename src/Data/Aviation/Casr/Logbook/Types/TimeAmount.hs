@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
 
@@ -39,12 +40,12 @@ zerotimeamount =
   TimeAmount 0 x0
 
 addtimeamount ::
-  TimeAmount 
+  TimeAmount
   -> TimeAmount
   -> TimeAmount
 TimeAmount f1 p1 `addtimeamount` TimeAmount f2 p2 =
   let (h, q) = p1 `addDecDigit'` p2
-  in  TimeAmount (f1 + f2 + integralDecimal # (h :: DecDigit)) q 
+  in  TimeAmount (f1 + f2 + integralDecimal # (h :: DecDigit)) q
 
 timeAmountBy10 ::
   TimeAmount

@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
 
@@ -50,7 +51,7 @@ nodobaviator ::
   -> Aviator
 nodobaviator s f r =
   Aviator
-    s 
+    s
     f
     r
     Nothing
@@ -64,7 +65,7 @@ dobaviator ::
   -> Aviator
 dobaviator s f r b =
   Aviator
-    s 
+    s
     f
     r
     (Just b)

@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Data.Aviation.Casr.Logbook.Reports.TakeOffLanding90(
@@ -6,7 +7,7 @@ module Data.Aviation.Casr.Logbook.Reports.TakeOffLanding90(
 ) where
 
 import Control.Lens(makeClassy)
-import Data.Aviation.Casr.Logbook.Types(FlightPoint)
+import Data.Aviation.Casr.Logbook.Types.FlightPoint ( FlightPoint )
 import Data.Eq(Eq)
 import Data.Ord(Ord)
 import Data.Time(Day)

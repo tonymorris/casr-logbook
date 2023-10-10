@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
 
@@ -5,7 +6,7 @@ module Data.Aviation.Casr.Logbook.Types.Briefing(
   Briefing(..)
 , HasBriefing(..)
 ) where
-  
+
 import Control.Category((.))
 import Control.Lens(makeClassy)
 import Data.Aviation.Casr.Logbook.Types.Aviator(Aviator, HasAviator(aviator))
@@ -43,4 +44,4 @@ instance HasAviator Briefing where
 instance HasTimeAmount Briefing where
   timeAmount =
     briefingTimeAmount . timeAmount
-    
+

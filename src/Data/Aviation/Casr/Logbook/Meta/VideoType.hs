@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Data.Aviation.Casr.Logbook.Meta.VideoType(
@@ -5,9 +6,12 @@ module Data.Aviation.Casr.Logbook.Meta.VideoType(
 , AsVideoType(..)
 , linkVideoType
 , iframeVideoType
+, youtube
+, vimeo
+, bambuser
 ) where
 
-import Control.Lens(makeClassyPrisms)
+import Control.Lens(makeClassyPrisms, ( # ))
 import Data.Eq(Eq)
 import Data.List((++))
 import Data.Ord(Ord)
@@ -19,8 +23,26 @@ data VideoType =
   | Vimeo
   | Bambuser
   deriving (Eq, Ord, Show)
-  
+
 makeClassyPrisms ''VideoType
+
+youtube ::
+  AsVideoType t =>
+  t
+youtube =
+  _YouTube # ()
+
+vimeo ::
+  AsVideoType t =>
+  t
+vimeo =
+  _Vimeo # ()
+
+bambuser ::
+  AsVideoType t =>
+  t
+bambuser =
+  _Bambuser # ()
 
 linkVideoType ::
   VideoType
@@ -29,7 +51,7 @@ linkVideoType ::
 linkVideoType YouTube u =
   "https://www.youtube.com/watch?v=" ++ u
 linkVideoType Vimeo u =
-  "https://bambuser.com/v/" ++ u 
+  "https://bambuser.com/v/" ++ u
 linkVideoType Bambuser u =
   "https://vimeo.com/" ++ u
 

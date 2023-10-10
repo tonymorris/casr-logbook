@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -9,9 +10,11 @@ module Data.Aviation.Casr.Logbook.Meta.ExamMeta(
 ) where
 
 import Control.Lens(makeClassy, makeWrapped)
-import Data.Aviation.Casr.Logbook.Meta.ExamExpense
+import Data.Aviation.Casr.Logbook.Meta.ExamExpense ( ExamExpense )
 import Data.Eq(Eq)
+import Data.Monoid ( (<>), Monoid(mempty) )
 import Data.Ord(Ord)
+import Data.Semigroup ( Semigroup )
 import Prelude(Show)
 
 newtype ExamMeta =
@@ -21,3 +24,11 @@ newtype ExamMeta =
 
 makeClassy ''ExamMeta
 makeWrapped ''ExamMeta
+
+instance Semigroup ExamMeta where
+  ExamMeta x <> ExamMeta y =
+    ExamMeta (x <> y)
+
+instance Monoid ExamMeta where
+  mempty =
+    ExamMeta mempty

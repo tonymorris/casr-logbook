@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE TemplateHaskell #-}
 
 module Data.Aviation.Casr.Logbook.Reports.Meta.ExpenseReport(
@@ -10,20 +11,31 @@ module Data.Aviation.Casr.Logbook.Reports.Meta.ExpenseReport(
 import Control.Category((.))
 import Control.Lens(makeClassy, (^.), _Wrapped)
 import Control.Monad((>>=), return)
-import Data.Aviation.Casr.Logbook.Types(Entry(AircraftFlightEntry, SimulatorFlightEntry, ExamEntry, BriefingEntry), Logbook, logbookentries)
-import Data.Aviation.Casr.Logbook.Meta(
-    AircraftFlightMeta
-  , SimulatorFlightMeta
-  , BriefingMeta
-  , ExamMeta
-  , AircraftFlightExpense(ExpenseAircraftUsage, ExpenseAircraftLanding)
-  , briefingCost
-  , examexpenseamount
-  , simulatorFlightCost
-  , aircraftlandingexpenseamount
-  , expenses
-  , aircraftUsageCost
-  )
+import Data.Aviation.Casr.Logbook.Types.Entry
+    ( Entry(AircraftFlightEntry, SimulatorFlightEntry, ExamEntry,
+            BriefingEntry) )
+import Data.Aviation.Casr.Logbook.Types.Logbook
+    ( Logbook, logbookentries )
+import Data.Aviation.Casr.Logbook.Meta.AircraftFlightExpense
+    ( AircraftFlightExpense(ExpenseAircraftUsage,
+                            ExpenseAircraftLanding) )
+import Data.Aviation.Casr.Logbook.Meta.AircraftFlightMeta
+    ( AircraftFlightMeta, expenses )
+import Data.Aviation.Casr.Logbook.Meta.AircraftLandingExpense
+    ( aircraftlandingexpenseamount )
+import Data.Aviation.Casr.Logbook.Meta.AircraftUsageExpense
+    ( aircraftUsageCost )
+import Data.Aviation.Casr.Logbook.Meta.BriefingExpense
+    ( briefingCost )
+import Data.Aviation.Casr.Logbook.Meta.BriefingMeta
+    ( BriefingMeta )
+import Data.Aviation.Casr.Logbook.Meta.ExamExpense
+    ( examexpenseamount )
+import Data.Aviation.Casr.Logbook.Meta.ExamMeta ( ExamMeta )
+import Data.Aviation.Casr.Logbook.Meta.SimulatorFlightExpense
+    ( simulatorFlightCost )
+import Data.Aviation.Casr.Logbook.Meta.SimulatorFlightMeta
+    ( SimulatorFlightMeta )
 import Data.Eq(Eq)
 import Data.Foldable(sum, foldMap)
 import Data.Function(($))
@@ -31,8 +43,7 @@ import Data.Int(Int)
 import Data.Monoid(Monoid(mempty, mappend))
 import Data.Ord(Ord)
 import Data.Semigroup(Semigroup((<>)))
-import Prelude(Show)
-import Prelude((+))
+import Prelude(Show, (+))
 
 data ExpenseReport =
   ExpenseReport {

@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE TypeFamilies #-}
 {-# LANGUAGE MultiParamTypeClasses #-}
@@ -10,8 +11,11 @@ module Data.Aviation.Casr.Logbook.Meta.BriefingMeta(
 
 import Control.Lens(makeClassy, makeWrapped)
 import Data.Aviation.Casr.Logbook.Meta.BriefingExpense
+    ( BriefingExpense )
 import Data.Eq(Eq)
+import Data.Monoid ( (<>), Monoid(mempty) )
 import Data.Ord(Ord)
+import Data.Semigroup ( Semigroup )
 import Prelude(Show)
 
 newtype BriefingMeta =
@@ -21,3 +25,11 @@ newtype BriefingMeta =
 
 makeClassy ''BriefingMeta
 makeWrapped ''BriefingMeta
+
+instance Semigroup BriefingMeta where
+  BriefingMeta x <> BriefingMeta y =
+    BriefingMeta (x <> y)
+
+instance Monoid BriefingMeta where
+  mempty =
+    BriefingMeta mempty

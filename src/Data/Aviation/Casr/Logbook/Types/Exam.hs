@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
 
@@ -27,7 +28,7 @@ data Exam =
   , _examDelegate :: Aviator
   , _examResult :: Int
   , _examResultMaximum :: Int
-  } deriving (Eq, Ord, Show)  
+  } deriving (Eq, Ord, Show)
 
 makeClassy ''Exam
 
@@ -42,7 +43,7 @@ instance HasTime Exam where
 instance HasAviator Exam where
   aviator =
     examDelegate . aviator
-    
+
 dayonlyexam ::
   String
   -> Location

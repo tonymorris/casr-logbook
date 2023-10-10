@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 {-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE FunctionalDependencies #-}
@@ -15,7 +16,7 @@ import Data.Aviation.Casr.Logbook.Types.Entry(Entry)
 import Data.Eq(Eq)
 import Data.Ord(Ord)
 import Prelude(Show)
-  
+
 newtype Entries ae se ee be =
   Entries
     [Entry ae se ee be]
