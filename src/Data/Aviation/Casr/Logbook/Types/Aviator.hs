@@ -8,9 +8,11 @@ module Data.Aviation.Casr.Logbook.Types.Aviator(
 , aviatorwithname
 , nodobaviator
 , dobaviator
+, dob'
 ) where
 
-import Control.Lens(makeClassy)
+import Control.Category ( Category((.)) )
+import Control.Lens(makeClassy, Traversal', _Just)
 import Data.Aviation.Casr.Logbook.Types.Rating(Rating)
 import Data.Eq(Eq)
 import Data.Ord(Ord)
@@ -30,6 +32,12 @@ data Aviator =
   } deriving (Eq, Ord, Show)
 
 makeClassy ''Aviator
+
+dob' ::
+  HasAviator c =>
+  Traversal' c Day
+dob' =
+  dob . _Just
 
 aviatorwithname ::
   String

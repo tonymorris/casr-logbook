@@ -12,24 +12,43 @@ module Data.Aviation.Casr.Logbook.Reports.Html(
 
 import Control.Category((.))
 import Control.Lens((^.), _Wrapped)
-import Data.Aviation.Casr.Logbook.Types(
-    landingTime
-  , daytime
-  , point
-  , logbookentries
-  , flightStart
-  , flightIntermediate
-  , flightEnd
-  , flightpath
-  , FlightPoint
-  , Logbook
-  , Entry(AircraftFlightEntry)
-  )
+import Data.Aviation.Casr.Logbook.Types.AircraftFlight
+    ( flightpath )
+import Data.Aviation.Casr.Logbook.Types.Entry
+    ( Entry(AircraftFlightEntry) )
+import Data.Aviation.Casr.Logbook.Types.FlightPath
+    ( flightStart, flightIntermediate, flightEnd )
+import Data.Aviation.Casr.Logbook.Types.FlightPoint
+    ( landingTime, point, FlightPoint )
+import Data.Aviation.Casr.Logbook.Types.Logbook
+    ( logbookentries, Logbook )
+import Data.Aviation.Casr.Logbook.Types.Time ( daytime )
 import Data.Aviation.Casr.Logbook.Html.Html(
     htmlTimeAmount
   , htmlAviatorShort
   )
-import Data.Aviation.Casr.Logbook.Reports
+import Data.Aviation.Casr.Logbook.Reports.FlightTimeReport
+    ( FlightTimeReport,
+      HasFlightTimeReport(hoursInstrument, hoursWithPiC,
+                          hoursGA3Instructing, hoursGA2Instructing, hoursGA1Instructing,
+                          hoursGAInstructing, hoursRASeniorInstructing,
+                          hoursRAJuniorInstructing, hoursRAInstructing, hoursNightInCommand,
+                          hoursNightDual, hoursNightICUS, hoursNight, hoursDayInCommand,
+                          hoursDayDual, hoursDayICUS, hoursDay, hoursMultiEngineInCommand,
+                          hoursMultiEngineDual, hoursMultiEngineICUS, hoursMultiEngine,
+                          hoursSingleEngineInCommand, hoursSingleEngineDual,
+                          hoursSingleEngineICUS, hoursSingleEngine,
+                          hoursInAircraftRegistration, hoursInAircraftType, hoursInstructing,
+                          hoursTotalInCommand, hoursTotalDual, hoursTotalICUS, hoursTotal,
+                          flightsTotal) )
+import Data.Aviation.Casr.Logbook.Reports.SimulatorTimeReport
+    ( HasSimulatorTimeReport(hoursTotalSimulator,
+                             hoursInstrumentSimulator),
+      SimulatorTimeReport )
+import Data.Aviation.Casr.Logbook.Reports.TakeOffLanding90
+    ( HasTakeOffLanding90(currency90, landing3, landing2, landing1,
+                          takeoff3, takeoff2, takeoff1),
+      TakeOffLanding90(TakeOffLanding90) )
 import Data.Foldable(foldr)
 import Data.Function(flip, ($))
 import qualified Data.Map as Map(foldrWithKey)

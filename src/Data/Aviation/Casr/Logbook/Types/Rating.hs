@@ -7,9 +7,11 @@ module Data.Aviation.Casr.Logbook.Types.Rating(
 , HasRating(..)
 , nodayrating
 , dayrating
+, ratingAchieved'
 ) where
 
-import Control.Lens(makeClassy)
+import Control.Category
+import Control.Lens(makeClassy, Traversal', _Just)
 import Data.Eq(Eq)
 import Data.Maybe(Maybe(Nothing, Just))
 import Data.Ord(Ord)
@@ -24,6 +26,12 @@ data Rating =
   } deriving (Eq, Ord, Show)
 
 makeClassy ''Rating
+
+ratingAchieved' ::
+  HasRating c =>
+  Traversal' c Day
+ratingAchieved' =
+  ratingAchieved . _Just
 
 nodayrating ::
   String

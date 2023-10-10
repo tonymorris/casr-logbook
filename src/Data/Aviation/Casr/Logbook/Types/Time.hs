@@ -7,9 +7,11 @@ module Data.Aviation.Casr.Logbook.Types.Time(
 , HasTime(..)
 , dayonly
 , dayandtime
+, timeofday'
 ) where
 
-import Control.Lens(makeClassy)
+import Control.Category ( Category((.)) )
+import Control.Lens(makeClassy, Traversal', _Just)
 import Data.Eq(Eq)
 import Data.Ord(Ord)
 import Data.Maybe(Maybe(Nothing, Just))
@@ -23,6 +25,12 @@ data Time =
   } deriving (Eq, Ord, Show)
 
 makeClassy ''Time
+
+timeofday' ::
+  HasTime c =>
+  Traversal' c TimeOfDay
+timeofday' =
+  timeofday . _Just
 
 dayonly ::
   Day

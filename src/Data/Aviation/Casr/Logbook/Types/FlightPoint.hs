@@ -7,9 +7,11 @@ module Data.Aviation.Casr.Logbook.Types.FlightPoint(
 , HasFlightPoint(..)
 , pointatdate
 , runwayatdate
+, runway'
 ) where
 
-import Control.Lens(makeClassy)
+import Control.Category ( Category((.)) )
+import Control.Lens(makeClassy, Traversal', _Just)
 import Data.Aviation.Casr.Logbook.Types.Time(Time, dayonly)
 import Data.Eq(Eq)
 import Data.Maybe(Maybe(Nothing, Just))
@@ -26,6 +28,12 @@ data FlightPoint =
   } deriving (Eq, Ord, Show)
 
 makeClassy ''FlightPoint
+
+runway' ::
+  HasFlightPoint c =>
+  Traversal' c String
+runway' =
+  runway . _Just
 
 pointatdate ::
   String

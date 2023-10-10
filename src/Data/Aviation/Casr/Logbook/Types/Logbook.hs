@@ -23,7 +23,7 @@ import Prelude(Show)
 data Logbook ae se ee be =
   Logbook {
     _logbookaviator :: Aviator
-  , _logbookentries :: (Entries ae se ee be)
+  , _logbookentries :: Entries ae se ee be
   } deriving (Eq, Ord, Show)
 
 makeClassy ''Logbook

@@ -4,7 +4,8 @@
 
 module Data.Aviation.Casr.Logbook.Types.Instruction where
 
-import Control.Lens ( makeClassyPrisms, isn't, makeClassy )
+import Control.Category ( Category((.)) )
+import Control.Lens ( makeClassyPrisms, Traversal', _Just, isn't, makeClassy )
 import Data.Aviation.Casr.Logbook.Types.Aviator ( Aviator )
 import Data.Bool ( Bool, (&&) )
 import Data.Eq(Eq)
@@ -21,6 +22,12 @@ data InstructionLesson =
   } deriving (Eq, Ord, Show)
 
 makeClassy ''InstructionLesson
+
+lesson' ::
+  HasInstructionLesson c =>
+  Traversal' c String
+lesson' =
+  lesson . _Just
 
 data InstructionRating =
   GA3InstructionRating

@@ -10,7 +10,7 @@ module Data.Aviation.Casr.Logbook.Meta.TrackLogs(
 ) where
 
 import Control.Lens(makeClassy, makeWrapped)
-import Data.Aviation.Casr.Logbook.Meta.TrackLog
+import Data.Aviation.Casr.Logbook.Meta.TrackLog ( TrackLog )
 import Data.Eq(Eq)
 import Data.Monoid ( (<>), Monoid(mempty) )
 import Data.Ord(Ord)
