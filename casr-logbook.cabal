@@ -33,7 +33,7 @@ library
                     , containers >= 0.4 && < 0.7
                     , lucid >= 2.9 && < 3
                     , digit >= 0.8 && < 1
-                    , time >= 1.5
+                    , time >= 1.5 && < 1.13
                     , lucid >= 2.9
                     , lens >= 4.1 && < 6
                     , text >= 1.2 && < 3
