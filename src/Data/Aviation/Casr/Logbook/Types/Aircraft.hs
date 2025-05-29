@@ -18,7 +18,8 @@ import Prelude(Show)
 
 data Aircraft =
   Aircraft {
-    _aircraftType :: String
+    _aircraftYearModel :: String
+  , _aircraftType :: String
   , _aircraftRegistration :: String
   , _aircraftEngine :: Engine
   } deriving (Eq, Ord, Show)
@@ -28,9 +29,11 @@ makeClassy ''Aircraft
 singleaircraft ::
   String
   -> String
+  -> String
   -> Aircraft
-singleaircraft t r =
+singleaircraft y t r =
   Aircraft
+    y
     t
     r
     Single
@@ -38,9 +41,11 @@ singleaircraft t r =
 multiaircraft ::
   String
   -> String
+  -> String
   -> Aircraft
-multiaircraft t r =
+multiaircraft y t r =
   Aircraft
+    y
     t
     r
     Multi

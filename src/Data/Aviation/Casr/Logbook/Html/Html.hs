@@ -58,7 +58,8 @@ import Data.Aviation.Casr.Logbook.Types
       HasTime(daytime),
       zerotimeamount,
       Rating(Rating),
-      Aircraft(Aircraft),
+      Aircraft,
+      HasAircraft(..),
       FlightPoint(FlightPoint),
       Aviator(Aviator),
       HasAircraft(aircraftRegistration),
@@ -158,13 +159,15 @@ htmlAircraft ::
   AircraftFlight
   -> Aircraft
   -> Html ()
-htmlAircraft _ (Aircraft t r e) =
+htmlAircraft _ acft =
   span_ [class_ "aircraft"] $
-    do  span_ [class_ "aircrafttype"] (fromString t)
+    do  span_ [class_ "aircraftyearmodel"] (fromString (view aircraftYearModel acft))
         " "
-        span_ [class_ "aircraftregistration"] (fromString r)
+        span_ [class_ "aircrafttype"] (fromString (view aircraftType acft))
         " "
-        span_ [class_ "aircraftengine"] (fromString (strEngine e))
+        span_ [class_ "aircraftregistration"] (fromString (view aircraftRegistration acft))
+        " "
+        span_ [class_ "aircraftengine"] (fromString (strEngine (view aircraftEngine acft)))
 
 htmlRatingDay ::
   Maybe Day
