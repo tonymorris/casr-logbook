@@ -4,6 +4,7 @@
 {-# LANGUAGE MultiParamTypeClasses #-}
 {-# LANGUAGE FlexibleInstances #-}
 {-# LANGUAGE InstanceSigs #-}
+{-# LANGUAGE TypeOperators #-}
 
 module Data.Aviation.Casr.Logbook.Meta.SimulatorFlightMeta(
   SimulatorFlightMeta(SimulatorFlightMeta)
