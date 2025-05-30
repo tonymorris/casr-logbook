@@ -38,7 +38,7 @@ import Data.Aviation.Casr.Logbook.Reports.FlightTimeReport
                           hoursMultiEngineDual, hoursMultiEngineICUS, hoursMultiEngine,
                           hoursSingleEngineInCommand, hoursSingleEngineDual,
                           hoursSingleEngineICUS, hoursSingleEngine,
-                          hoursInAircraftRegistration, hoursInAircraftType, hoursInstructing,
+                          hoursInAircraftRegistration, hoursInAircraftType, hoursInAircraftTypeVariant, hoursInstructing,
                           hoursTotalInCommand, hoursTotalDual, hoursTotalICUS, hoursTotal,
                           flightsTotal) )
 import Data.Aviation.Casr.Logbook.Reports.SimulatorTimeReport
@@ -222,6 +222,26 @@ htmlFlightTimeReport _ r =
                                           do  span_ [class_ "key"] "in-command: "
                                               span_ [class_ "value"] . htmlTimeAmount $ ic
                             x) mempty $ r ^. hoursInAircraftType
+              li_ [] $
+                do  span_ [class_ "key"] "Hours in type variant: "
+                    div_ [class_ "value"] .
+                      ul_ [] . Map.foldrWithKey (\(y, v) (tl, iu, dl, ic) x ->
+                        do  li_ [] $
+                              do  span_ [class_ "aircrafttypevariant"] $ fromString (y ++ " " ++ v)
+                                  ul_ [] $
+                                    do  li_ [] $
+                                          do  span_ [class_ "key"] "total: "
+                                              span_ [class_ "value"] . htmlTimeAmount $ tl
+                                        li_ [] $
+                                          do  span_ [class_ "key"] "in-command under-instruction: "
+                                              span_ [class_ "value"] . htmlTimeAmount $ iu
+                                        li_ [] $
+                                          do  span_ [class_ "key"] "dual under-instruction: "
+                                              span_ [class_ "value"] . htmlTimeAmount $ dl
+                                        li_ [] $
+                                          do  span_ [class_ "key"] "in-command: "
+                                              span_ [class_ "value"] . htmlTimeAmount $ ic
+                            x) mempty $ r ^. hoursInAircraftTypeVariant
               li_ [] $
                 do  span_ [class_ "key"] "Hours in registration: "
                     div_ [class_ "value"] .

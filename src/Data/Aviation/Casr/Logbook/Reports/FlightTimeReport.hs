@@ -37,6 +37,8 @@ data FlightTimeReport =
       TimeAmount
   , _hoursInAircraftType ::
       Map String (TimeAmount, TimeAmount, TimeAmount, TimeAmount)
+  , _hoursInAircraftTypeVariant ::
+      Map (String, String) (TimeAmount, TimeAmount, TimeAmount, TimeAmount)
   , _hoursInAircraftRegistration ::
       Map String (TimeAmount, TimeAmount, TimeAmount, TimeAmount)
   , _hoursSingleEngine ::
@@ -96,7 +98,7 @@ data FlightTimeReport =
 makeClassy ''FlightTimeReport
 
 instance Semigroup FlightTimeReport where
-  FlightTimeReport ft1 tl1 tli1 tld1 tlc1 tp1 rg1 se1 sei1 sed1 sec1 me1 mei1 med1 mec1 dy1 dyi1 dyd1 dyc1 ins1 insg1 insg1_1 insg1_2 insg1_3 insr1  insr1_j insr1_s nt1 nti1 ntd1 ntc1 wpc1 is1 <> FlightTimeReport ft2 tl2 tli2 tld2 tlc2 tp2 rg2 se2 sei2 sed2 sec2 me2 mei2 med2 mec2 dy2 dyi2 dyd2 dyc2 ins2 insg2 insg2_1 insg2_2 insg2_3 insr2 insr2_j insr2_s nt2 nti2 ntd2 ntc2 wpc2 is2 =
+  FlightTimeReport ft1 tl1 tli1 tld1 tlc1 tp1 tv1 rg1 se1 sei1 sed1 sec1 me1 mei1 med1 mec1 dy1 dyi1 dyd1 dyc1 ins1 insg1 insg1_1 insg1_2 insg1_3 insr1  insr1_j insr1_s nt1 nti1 ntd1 ntc1 wpc1 is1 <> FlightTimeReport ft2 tl2 tli2 tld2 tlc2 tp2 tv2 rg2 se2 sei2 sed2 sec2 me2 mei2 med2 mec2 dy2 dyi2 dyd2 dyc2 ins2 insg2 insg2_1 insg2_2 insg2_3 insr2 insr2_j insr2_s nt2 nti2 ntd2 ntc2 wpc2 is2 =
     FlightTimeReport
       (ft1 + ft2)
       (tl1 <> tl2)
@@ -104,6 +106,7 @@ instance Semigroup FlightTimeReport where
       (tld1 <> tld2)
       (tlc1 <> tlc2)
       (Map.unionWith mappend tp1 tp2)
+      (Map.unionWith mappend tv1 tv2)
       (Map.unionWith mappend rg1 rg2)
       (se1 <> se2)
       (sei1 <> sei2)
@@ -136,6 +139,7 @@ instance Monoid FlightTimeReport where
   mempty =
     FlightTimeReport
       0
+      mempty
       mempty
       mempty
       mempty
@@ -305,6 +309,7 @@ singleFlightTimeReport (AircraftFlightEntry fl _) =
         (dual hoursdaynight)
         (comd hoursdaynight)
         (hoursmap (fl ^. flightaircraft . aircraftType))
+        (hoursmap (fl ^. flightaircraft . aircraftType, fl ^. flightaircraft . aircraftTypeVariant))
         (hoursmap (fl ^. flightaircraft . aircraftRegistration))
         (singleengine hoursdaynight)
         (singleengine (icus hoursdaynight))
